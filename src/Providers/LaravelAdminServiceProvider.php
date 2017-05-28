@@ -19,12 +19,10 @@ class LaravelAdminServiceProvider extends ServiceProvider
     {
         //需要生成的迁徙文件
         $this->publishes([
-            __DIR__.'/../Publishes/database/migrations' => database_path('migrations')
-        ], 'migrations');
-        //需要生成的数据填充
-        $this->publishes([
+            __DIR__.'/../Publishes/database/migrations' => database_path('migrations'),
             __DIR__.'/../Publishes/database/seeds' => database_path('seeds')
-        ], 'seeds');
+        ]);
+
         //时间语言设置
         \Carbon\Carbon::setLocale(array_get(explode('-',config('app.locale')),0));
         Route::pattern('id', '[0-9]+'); //全局路由设置
