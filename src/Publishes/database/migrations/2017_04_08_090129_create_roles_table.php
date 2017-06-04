@@ -18,7 +18,7 @@ class CreateRolesTable extends Migration
         $model = new $this->bindModel();
         $prefix = $model->getConnection()->getTablePrefix();
         $connection = $model->getConnectionName()?: config('database.default');
-        DB::connection($connection)->statement("CREATE TABLE `".$prefix.$model->getTable()."` (
+        DB::connection($connection)->statement("CREATE TABLE IF NOT EXISTS `".$prefix.$model->getTable()."` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '角色ID',
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '角色名称@required',
   `description` text COLLATE utf8_unicode_ci COMMENT '描述\$textarea',

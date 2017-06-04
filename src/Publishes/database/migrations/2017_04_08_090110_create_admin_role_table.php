@@ -18,7 +18,7 @@ class CreateAdminRoleTable extends Migration
         $model = new $this->bindModel();
         $prefix = $model->getConnection()->getTablePrefix();
         $connection = $model->getConnectionName()?: config('database.default');
-        DB::connection($connection)->statement("CREATE TABLE `".$prefix.$model->getTable()."` (
+        DB::connection($connection)->statement("CREATE TABLE IF NOT EXISTS `".$prefix.$model->getTable()."` (
   `admin_id` int(11) NOT NULL COMMENT '用户ID',
   `role_id` int(11) NOT NULL COMMENT '角色ID',
   PRIMARY KEY (`admin_id`,`role_id`),

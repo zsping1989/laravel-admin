@@ -18,7 +18,7 @@ class CreateMenuRoleTable extends Migration
         $model = new $this->bindModel();
         $prefix = $model->getConnection()->getTablePrefix();
         $connection = $model->getConnectionName()?: config('database.default');
-        DB::connection($connection)->statement("CREATE TABLE `".$prefix.$model->getTable()."` (
+        DB::connection($connection)->statement("CREATE TABLE IF NOT EXISTS `".$prefix.$model->getTable()."` (
   `role_id` int(11) NOT NULL COMMENT '角色ID',
   `menu_id` int(11) NOT NULL COMMENT '菜单ID',
   PRIMARY KEY (`role_id`,`menu_id`),

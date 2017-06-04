@@ -18,7 +18,7 @@ class CreatePasswordResetsTable extends Migration
         $model = new $this->bindModel();
         $prefix = $model->getConnection()->getTablePrefix();
         $connection = $model->getConnectionName()?: config('database.default');
-        DB::connection($connection)->statement("CREATE TABLE `".$prefix.$model->getTable()."` (
+        DB::connection($connection)->statement("CREATE TABLE IF NOT EXISTS `".$prefix.$model->getTable()."` (
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '邮箱@required|email',
   `token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
