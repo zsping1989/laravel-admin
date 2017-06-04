@@ -14,6 +14,9 @@
     "autoload": {
         "psr-4": {
             "LaravelAdmin\\": "src"
-        }
+        },
+        "files":[
+            "src/helpers.php"
+        ]
     }
 }

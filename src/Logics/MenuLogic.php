@@ -6,10 +6,11 @@
  * 日期: 2016/6/28
  * 时间: 11:14
  */
-namespace App\Logics;
+namespace LaravelAdmin\Logics;
 
 use App\Models\Menu;
 use Illuminate\Support\Facades\Route;
+use LaravelAdmin\Facades\UserLogic;
 
 class MenuLogic{
 

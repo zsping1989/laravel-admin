@@ -5,6 +5,8 @@ namespace LaravelAdmin\Providers;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use LaravelAdmin\Logics\UserLogic;
+use LaravelAdmin\Logics\MenuLogic;
 use LaravelAdmin\Services\OptionRepository;
 
 class LaravelAdminServiceProvider extends ServiceProvider
@@ -43,5 +45,11 @@ class LaravelAdminServiceProvider extends ServiceProvider
     {
         //系统配置
         $this->app->singleton('option', OptionRepository::class);
+        //用户逻辑
+        $this->app->singleton('user.logic', UserLogic::class);
+
+
+        //菜单逻辑
+        $this->app->singleton('menu.logic', MenuLogic::class);
     }
 }

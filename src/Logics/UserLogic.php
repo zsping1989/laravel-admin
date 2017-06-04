@@ -6,11 +6,9 @@
  * 日期: 2016/6/28
  * 时间: 11:14
  */
-namespace App\Logics;
+namespace LaravelAdmin\Logics;
 
-use App\Models\CinemaHost;
 use App\Models\Menu;
-use App\Models\OrgHallCount;
 use App\Models\Role;
 use App\User;
 use Illuminate\Support\Facades\Auth;
