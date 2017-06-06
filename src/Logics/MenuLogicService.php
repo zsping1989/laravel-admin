@@ -12,7 +12,7 @@ use App\Models\Menu;
 use Illuminate\Support\Facades\Route;
 use LaravelAdmin\Facades\UserLogic;
 
-class MenuLogic{
+class MenuLogicService{
 
     /**
      * 获取导航条

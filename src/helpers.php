@@ -19,6 +19,26 @@ function canRedirect(){
 }
 
 /**
+ * 可能跳转重定向页面
+ * ajax,jsonp,script等请求不予跳转
+ *
+ * 参数 null $to
+ * 参数 int $status
+ * 返回: \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+ */
+function orRedirect($to = null, $status = 302){
+    if(canRedirect()){
+        return redirect($to,$status);
+    }
+
+    return \Illuminate\Support\Facades\Response::returns([
+        'title'=>\Illuminate\Support\Facades\Lang::get('status.status302'),
+        'content'=>\Illuminate\Support\Facades\Lang::get('status.redirectTo').$to,
+        'redirect' => $to
+    ]);
+}
+
+/**
  * 获取用户缓存信息
  * param string $key
  * 返回: mixed

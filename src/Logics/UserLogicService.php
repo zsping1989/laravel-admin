@@ -14,7 +14,7 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
-class UserLogic{
+class UserLogicService{
     //存储后台用户信息
     protected $admin;
     //用户信息

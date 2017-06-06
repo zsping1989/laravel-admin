@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
   `mobile_phone` varchar(11) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '电话@sometimes|required|mobile_phone|digits:11|unique:users,mobile_phone',
   `qq` int(11) DEFAULT '0' COMMENT 'QQ号码@integer',
   `remember_token` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态:0-停用,1-有效,2-待更新,3-待报备,4-注销\$radio',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态:0-停用,1-有效\$radio',
   `description` text COLLATE utf8_unicode_ci COMMENT '备注',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
