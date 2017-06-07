@@ -29,7 +29,7 @@ class MenuLogicService{
             }
         }
         $menu AND $menu->url = 'end';
-        return $menu ? collect($menu->parents()->toArray())->push($menu)->keyBy('id') : collect([]);
+        return $menu ? collect($menu->parents()->toArray())->push($menu) : collect([]);
     }
 
     /**
