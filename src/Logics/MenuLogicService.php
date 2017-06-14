@@ -19,6 +19,16 @@ class MenuLogicService{
      * 返回: array|static
      */
     public function getNavbar(){
+        $menu = $this->getNowMenu();
+        $menu AND $menu->url = 'end';
+        return $menu ? collect($menu->parents()->toArray())->push($menu) : collect([]);
+    }
+
+    /**
+     * 获取当前菜单路由
+     * @return mixed
+     */
+    public function getNowMenu(){
         $route = app('request')->getPathInfo();
         $menu = Menu::where('url','=',$route)->orderBy('right_margin')->first();
         if(!$menu){
@@ -28,8 +38,7 @@ class MenuLogicService{
                 $menu = Menu::where('url','like',$route.'%')->orderBy('right_margin')->first(); //最底层路由
             }
         }
-        $menu AND $menu->url = 'end';
-        return $menu ? collect($menu->parents()->toArray())->push($menu) : collect([]);
+        return $menu;
     }
 
     /**

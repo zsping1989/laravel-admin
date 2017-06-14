@@ -2,9 +2,14 @@
 
 namespace LaravelAdmin\Middleware;
 
+use App\Models\Log;
 use Closure;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
+use Resource\Facades\Data;
+use LaravelAdmin\Facades\MenuLogic;
 
 class AdminMiddleware{
     /**
@@ -65,6 +70,13 @@ class AdminMiddleware{
      */
     public function terminate($request, $response)
     {
-        // 结果成功返回到客户端后执行
+        //结果成功返回到客户端后执行,记录用户操作日志
+        Log::create([
+            'menu_id'=>array_get(MenuLogic::getNowMenu(),'id',0),
+            'user_id'=>array_get(Auth::user(),'id'),
+            'parameters'=>json_encode(Request::all()),
+            'return'=>json_encode(Data::all())
+        ]);
+
     }
 }

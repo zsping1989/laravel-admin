@@ -47,9 +47,8 @@ class LaravelAdminServiceProvider extends ServiceProvider
         $this->app->singleton('option', OptionRepository::class);
         //用户逻辑
         $this->app->singleton('user.logic', UserLogicService::class);
-
-
         //菜单逻辑
         $this->app->singleton('menu.logic', MenuLogicService::class);
+
     }
 }
