@@ -13,7 +13,7 @@ class Menu extends Model
 {
     protected $table = 'menus'; //数据表名称
     //软删除,树状结构
-    use SoftDeletes,TreeModel,ExcludeTop;
+    use SoftDeletes,TreeModel,ExcludeTop,BaseModel;
 
 
     //批量赋值白名单
