@@ -3,10 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class CreateRolesTable extends Migration
+class CreateLogsTable extends Migration
 {
 
-    protected $bindModel='App\Models\Role';
+    protected $bindModel='App\Models\Log';
 
     /**
      * Run the migrations.
@@ -19,18 +19,16 @@ class CreateRolesTable extends Migration
         $prefix = $model->getConnection()->getTablePrefix();
         $connection = $model->getConnectionName()?: config('database.default');
         DB::connection($connection)->statement("CREATE TABLE IF NOT EXISTS `".$prefix.$model->getTable()."` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '名称@required',
-  `description` text COLLATE utf8_unicode_ci COMMENT '描述\$textarea',
-  `parent_id` int(11) NOT NULL DEFAULT '0' COMMENT '父级ID@sometimes|required|exists:roles,id',
-  `level` smallint(6) NOT NULL DEFAULT '0' COMMENT '层级',
-  `left_margin` int(11) NOT NULL DEFAULT '0' COMMENT '左边界',
-  `right_margin` int(11) NOT NULL DEFAULT '0' COMMENT '右边界',
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `menu_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '菜单ID',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `parameters` text COMMENT '请求参数',
+  `return` text COMMENT '返回数据',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='操作日志'");
     }
 
     /**
@@ -43,6 +41,6 @@ class CreateRolesTable extends Migration
         $model = new $this->bindModel();
         $prefix = $model->getConnection()->getTablePrefix();
         $connection = $model->getConnectionName()?: config('database.default');
-        DB::connection($connection)->statement('drop table `'.$prefix.$model->getTable().'`;');
+        DB::connection($connection)->statement('DROP TABLE IF EXISTS `'.$prefix.$model->getTable().'`;');
     }
 }
