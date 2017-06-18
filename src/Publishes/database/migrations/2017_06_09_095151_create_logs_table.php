@@ -22,6 +22,8 @@ class CreateLogsTable extends Migration
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `menu_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '菜单ID',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `area_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '区域ID',
+  `ip` varchar(100) NOT NULL DEFAULT '' COMMENT 'IP地址',
   `parameters` text COMMENT '请求参数',
   `return` text COMMENT '返回数据',
   `created_at` timestamp NULL DEFAULT NULL,
