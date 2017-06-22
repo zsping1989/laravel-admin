@@ -29,13 +29,26 @@ class MenuLogicService{
      * @return mixed
      */
     public function getNowMenu(){
+        $method = array_get(array_flip(Menu::getFieldsMap('method')),strtolower(app('request')->method()));
         $route = app('request')->getPathInfo();
-        $menu = Menu::where('url','=',$route)->orderBy('right_margin')->first();
+        $menu = Menu::where('url','=',$route)
+            ->where('is_page','=',1)
+            ->where('method','&',$method)
+            ->orderBy('right_margin')
+            ->first();
         if(!$menu){
             $route = Route::getCurrentRoute()->getCompiled()->getStaticPrefix(); //当前路由
-            $menu = Menu::where('url','=',$route)->orderBy('right_margin')->first(); //最底层路由
+            $menu = Menu::where('url','=',$route)
+                ->where('is_page','=',1)
+                ->where('method','&',$method)
+                ->orderBy('right_margin')
+                ->first(); //最底层路由
             if(!$menu){
-                $menu = Menu::where('url','like',$route.'%')->orderBy('right_margin')->first(); //最底层路由
+                $menu = Menu::where('url','like',$route.'%')
+                    ->where('is_page','=',1)
+                    ->where('method','&',$method)
+                    ->orderBy('right_margin')
+                    ->first(); //最底层路由
             }
         }
         return $menu;
@@ -47,10 +60,10 @@ class MenuLogicService{
      * @param $menus
      * @return bool
      */
-    public function isUrlInMenus($url,$menus){
+    public function isUrlInMenus($url,$menus,$method=1){
         $isIn = false;
-        collect($menus)->each(function($item) use (&$isIn,$url){
-            if(strpos($item['url'],$url)===0 || strpos('/data'.$item['url'],$url)===0){
+        collect($menus)->each(function($item) use (&$isIn,$url,$method){
+            if((strpos($item['url'],$url)===0 || strpos('/data'.$item['url'],$url)===0)&&$item['method']&$method){
                 $isIn = true;
             }
         });

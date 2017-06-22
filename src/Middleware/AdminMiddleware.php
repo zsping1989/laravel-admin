@@ -40,8 +40,11 @@ class AdminMiddleware{
             //当前路由
             $route = Route::getCurrentRoute()->getCompiled()->getStaticPrefix();
 
+            //请求方式
+            $method = array_get(array_flip(Menu::getFieldsMap('method')),strtolower(app('request')->method()),0);
+
             //判断当前路由是否在拥有权限url中
-            $hasPermission = app('menu.logic')->isUrlInMenus($route,$menus);;
+            $hasPermission = app('menu.logic')->isUrlInMenus($route,$menus,$method);
 
             //没有权限
             if(!$hasPermission){
