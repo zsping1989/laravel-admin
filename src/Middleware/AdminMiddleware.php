@@ -74,7 +74,7 @@ class AdminMiddleware{
     public function terminate($request, $response)
     {
         //结果成功返回到客户端后执行,记录用户操作日志
-   /*     Log::create([
+    /*    Log::create([
             'menu_id'=>array_get(MenuLogic::getNowMenu(),'id',0),
             'user_id'=>array_get(Auth::user(),'id'),
             'area_id'=>0,
