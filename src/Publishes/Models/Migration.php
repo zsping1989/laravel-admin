@@ -13,7 +13,7 @@ class Migration extends Model
     use SoftDeletes,BaseModel; //软删除
 
     //批量赋值白名单
-    protected $fillable = ['id','migration','batch'];
+    protected $fillable = ['migration','batch'];
     //输出隐藏字段
     protected $hidden = [];
     //日期字段

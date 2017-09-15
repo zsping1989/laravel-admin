@@ -110,6 +110,32 @@ function generateTree2($rows, $id='id', $pid='parent_id'){
     return isset($items[0]['son']) ? $items[0]['son'] : array();
 }
 
+function getModule(){
+    return collect(explode('/',app('request')->getPathInfo()))->filter()->first();
+}
+
+if (! function_exists('menv')) {
+    /**
+     * Gets the value of an environment variable by getenv() or $_ENV.
+     *
+     * @param  string  $key
+     * @param  mixed   $default
+     * @return mixed
+     */
+    function menv($key, $default = null)
+    {
+        $value = env($key);
+        if(!is_null($value)){
+            return $value;
+        }elseif (isset($_ENV[$key])) {
+            $value = $_ENV[$key];
+        } elseif (isset($_SERVER[$key])) {
+            $value = $_SERVER[$key];
+        }
+        return is_null($value) ? value($default) : $value;
+    }
+}
+
 
 
 

@@ -29,7 +29,10 @@ class CreateRolesTable extends Migration
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `roles_parent_id_index` (`parent_id`),
+  KEY `roles_left_margin_index` (`left_margin`),
+  KEY `roles_right_margin_index` (`right_margin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色'");
     }
 

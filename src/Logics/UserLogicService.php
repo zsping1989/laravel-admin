@@ -53,7 +53,7 @@ class UserLogicService{
      * 前端模块菜单
      */
     public function getHomeMenus(){
-        $home = Menu::find(2);
+        $home = Menu::find(3);
         return Menu::whereRaw('left_margin>='.$home['left_margin'].' AND right_margin<='.$home['right_margin'])
             ->orderBy('left_margin')->get();
     }
@@ -89,8 +89,11 @@ class UserLogicService{
      * @param $url
      * @return bool
      */
-    public function hasPermission ($url){
+    public function hasPermission ($url,$method=1){
         return collect($this->getUserInfo('menus'))
+            ->filter(function($item)use($method){
+                return in_array($method,$item['method']);
+            })
             ->pluck('url')
             ->contains($url);
     }

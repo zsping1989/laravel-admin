@@ -57,3 +57,10 @@ $factory->define(App\Models\Config::class, function (Faker\Generator $faker) {
     ];
 });
 
+//配置
+$factory->define(App\Models\Log::class, function (Faker\Generator $faker) {
+    return [];
+});
+
+
+

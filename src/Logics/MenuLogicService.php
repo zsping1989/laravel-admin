@@ -21,7 +21,7 @@ class MenuLogicService{
     public function getNavbar(){
         $menu = $this->getNowMenu();
         $menu AND $menu->url = 'end';
-        return $menu ? collect($menu->parents()->toArray())->push($menu) : collect([]);
+        return $menu ? collect(Menu::parents($menu)->orderBy('left_margin')->get()->toArray())->push($menu) : collect([]);
     }
 
     /**
@@ -29,23 +29,23 @@ class MenuLogicService{
      * @return mixed
      */
     public function getNowMenu(){
-        $method = array_get(array_flip(Menu::getFieldsMap('method')),strtolower(app('request')->method()));
+        $method = array_get(array_flip(Menu::getFieldsMap('method')->toArray()),strtolower(app('request')->method()));
         $route = app('request')->getPathInfo();
         $menu = Menu::where('url','=',$route)
-            ->where('is_page','=',1)
+            //->where('is_page','=',1)
             ->where('method','&',$method)
             ->orderBy('right_margin')
             ->first();
         if(!$menu){
             $route = Route::getCurrentRoute()->getCompiled()->getStaticPrefix(); //当前路由
             $menu = Menu::where('url','=',$route)
-                ->where('is_page','=',1)
+                //->where('is_page','=',1)
                 ->where('method','&',$method)
                 ->orderBy('right_margin')
                 ->first(); //最底层路由
             if(!$menu){
                 $menu = Menu::where('url','like',$route.'%')
-                    ->where('is_page','=',1)
+                    //->where('is_page','=',1)
                     ->where('method','&',$method)
                     ->orderBy('right_margin')
                     ->first(); //最底层路由
@@ -63,7 +63,7 @@ class MenuLogicService{
     public function isUrlInMenus($url,$menus,$method=1){
         $isIn = false;
         collect($menus)->each(function($item) use (&$isIn,$url,$method){
-            if((strpos($item['url'],$url)===0 || strpos('/data'.$item['url'],$url)===0)&&$item['method']&$method){
+            if((strpos($item['url'],$url)===0 || strpos('/data'.$item['url'],$url)===0)&&(in_array($method,$item['method']))){
                 $isIn = true;
             }
         });

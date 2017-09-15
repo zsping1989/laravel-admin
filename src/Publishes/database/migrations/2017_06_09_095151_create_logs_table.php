@@ -22,14 +22,16 @@ class CreateLogsTable extends Migration
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `menu_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '菜单ID',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `area_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '区域ID',
+  `location` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '位置',
   `ip` varchar(100) NOT NULL DEFAULT '' COMMENT 'IP地址',
   `parameters` text COMMENT '请求参数',
   `return` text COMMENT '返回数据',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `logs_menu_id_index` (`menu_id`) USING BTREE,
+  KEY `logs_user_id_index` (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='操作日志'");
     }
 

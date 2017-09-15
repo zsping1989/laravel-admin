@@ -5,12 +5,12 @@
 namespace App\Models;
 use Resource\Models\BaseModel;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MenuRole extends Model
 {
     protected $table = 'menu_role'; //数据表名称
-    use SoftDeletes,BaseModel; //软删除
+    public $timestamps = false;
+    use BaseModel; //软删除
 
     //批量赋值白名单
     protected $fillable = ['role_id','menu_id'];

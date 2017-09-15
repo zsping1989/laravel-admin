@@ -24,7 +24,7 @@ class LaravelAdminServiceProvider extends ServiceProvider
             __DIR__.'/../Publishes/database/migrations' => database_path('migrations'),
             __DIR__.'/../Publishes/database/seeds' => database_path('seeds'),
             __DIR__.'/../Publishes/Models' => app_path('Models')
-        ]);
+        ],'laravel-admin');
 
         //时间语言设置
         \Carbon\Carbon::setLocale(array_get(explode('-',config('app.locale')),0));

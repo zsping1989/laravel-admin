@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UserTableSeeder extends Seeder
 {
@@ -12,11 +13,18 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $class = $this->bindModel;
-        $json_data=<<<'JSON'
-[{"id":1,"uname":"admin","password":"$2y$10$L7t3MwkQjX6Arcv4wGYJ3udmvPPzyAeu99KB8Rzz9OMYU3drTDKbi","name":"\u7cfb\u7edf","email":"214986304@qq.com","mobile_phone":"13699411148","qq":214986304,"remember_token":"qH1Y04gXKEcZ4kq59Rrxim2UbAQCui2PL4A5ifiEVPtHS66t40VYj0scpxi1","status":1,"description":null,"created_at":"2017-04-09 09:22:03","updated_at":"2017-04-09 09:22:03","deleted_at":null}]
-JSON;
-        $data = json_decode($json_data,true);
-        $class::insertReplaceAll($data);
+        //初始化数据表
+        DB::table('users')->truncate(); //用户表
+
+        //ID:1 创建一个超级管理员用户
+        factory(\App\User::class)->create([
+            'uname'=>config('app.admin_user_name'),
+            'name'=>str_replace('业务系统','',config('app.name')),
+            'password'=>bcrypt(config('app.admin_password')),
+            'mobile_phone'=>13699411148,
+            'qq'=>214986304,
+            'email'=>'214986304@qq.com',
+            'status'=>1
+        ]);
     }
 }

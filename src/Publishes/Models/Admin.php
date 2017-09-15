@@ -13,11 +13,18 @@ class Admin extends Model
     use SoftDeletes,BaseModel; //软删除
 
     //批量赋值白名单
-    protected $fillable = ['id','user_id'];
+    protected $fillable = ['user_id'];
     //输出隐藏字段
     protected $hidden = ['deleted_at'];
     //日期字段
     protected $dates = ['created_at','updated_at','deleted_at'];
+    /**
+     * 字段默认值
+     * @var array
+     */
+    protected $fieldsDefault = [
+        'user_id'=>0
+    ];
 
 
     /* 用户信息 */

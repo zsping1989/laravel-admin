@@ -13,7 +13,7 @@ class Config extends Model
     use SoftDeletes,BaseModel; //软删除
 
     //批量赋值白名单
-    protected $fillable = ['id','name','description','key','value'];
+    protected $fillable = ['name','description','key','value'];
     //输出隐藏字段
     protected $hidden = ['deleted_at'];
     //日期字段

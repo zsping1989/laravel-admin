@@ -5,6 +5,77 @@ use Illuminate\Database\Seeder;
 class MenuTableSeeder extends Seeder
 {
     /**
+     * ID+5
+     * 创建资源菜单
+     */
+    protected function createRessorceMenu(\App\Models\Menu $roleMenu,$name=''){
+        //分页数据接口
+        factory(\App\Models\Menu::class)->create([
+            'name'=>$name.'分页',
+            'icons'=>'fa-list',
+            'url'=>str_replace('index','list',$roleMenu['url']),
+            'description' => $name.'分页数据',
+            'parent_id'=>$roleMenu['id'],
+            'status'=>2
+        ]);
+
+        //编辑页面
+        $editMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'编辑查看'.$name,
+            'icons'=>'fa-edit',
+            'url'=>str_replace('index','edit',$roleMenu['url']),
+            'description' => $name.'编辑页面',
+            'parent_id'=>$roleMenu['id'],
+            'is_page'=>1,
+            'status'=>2
+        ]);
+
+        //执行编辑接口
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'提交编辑'.$name,
+            'icons'=>'fa-edit',
+            'url'=>str_replace('index','edit',$roleMenu['url']),
+            'description' => $name.'编辑页面',
+            'parent_id'=>$editMenu['id'],
+            'method'=>'2',
+            'status'=>2
+        ]);
+
+        //删除数据接口
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'删除'.$name,
+            'icons'=>'fa-trash-o',
+            'url'=>str_replace('index','destroy',$roleMenu['url']),
+            'description' => '删除'.$name.'数据',
+            'parent_id'=>$roleMenu['id'],
+            'method'=>'2',
+            'status'=>2
+        ]);
+
+        //导出数据页面(excel)
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'导出'.$name,
+            'icons'=>'fa-file-excel-o',
+            'url'=>str_replace('index','export',$roleMenu['url']),
+            'description' => '导出'.$name.'数据',
+            'parent_id'=>$roleMenu['id'],
+            'status'=>2
+        ]);
+
+        //excel批量导入数据
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'导入'.$name,
+            'icons'=>'fa-database',
+            'url'=>str_replace('index','import',$roleMenu['url']),
+            'description' => '导入'.$name.'数据',
+            'parent_id'=>$roleMenu['id'],
+            'method'=>'2',
+            'status'=>2
+        ]);
+
+    }
+
+    /**
      * Run the database seeds.
      *
      * @return void
@@ -19,15 +90,17 @@ class MenuTableSeeder extends Seeder
         factory(\App\Models\Menu::class)->create([
             'name'=>'菜单列表',
             'url'=>'',
+            'method'=>0,
             'status'=>2,
             'description' => '根节点,所有菜单的父节点'
         ]);
 
         //ID:2
         factory(\App\Models\Menu::class)->create([
-            'name'=>'个人业务',
-            'icons'=>'fa-home',
-            'url'=>'/home/index',
+            'name'=>'控制面板',
+            'icons'=>'fa-dashboard',
+            'url'=>'/admin/index',
+            'method'=>1,
             'description' => '',
             'parent_id'=>1,
             'status'=>1
@@ -35,21 +108,22 @@ class MenuTableSeeder extends Seeder
 
         //ID:3
         factory(\App\Models\Menu::class)->create([
-            'name'=>'团队管理',
-            'icons'=>'fa-dashboard',
-            'url'=>'/admin/index',
+            'name'=>'前端板块',
+            'icons'=>'fa-building-o',
+            'url'=>'/home/index',
             'description' => '',
+            'method'=>1,
             'parent_id'=>1,
-            'status'=>1
+            'status'=>2
         ]);
-
 
         //ID:4
         factory(\App\Models\Menu::class)->create([
-            'name'=>'个人主页',
+            'name'=>'后台主页',
             'icons'=>'fa-home',
-            'url'=>'/home/index',
-            'description' => '',
+            'url'=>'/admin/index',
+            'method'=>1,
+            'description' => '数据概览',
             'parent_id'=>2,
             'is_page'=>1,
             'status'=>1
@@ -57,16 +131,25 @@ class MenuTableSeeder extends Seeder
 
         //ID:5
         factory(\App\Models\Menu::class)->create([
-            'name'=>'佣金查询',
-            'icons'=>'fa-credit-card',
-            'url'=>'/home/bill/index',
+            'name'=>'用户管理',
+            'icons'=>'fa-users',
+            'url'=>'',
             'description' => '',
             'parent_id'=>2,
-            'is_page'=>1,
             'status'=>1
         ]);
 
         //ID:6
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'其它设置',
+            'icons'=>'fa-gears',
+            'url'=>'',
+            'description' => '',
+            'parent_id'=>2,
+            'status'=>1
+        ]);
+
+        //ID:7
         factory(\App\Models\Menu::class)->create([
             'name'=>'个人中心',
             'icons'=>'fa-database',
@@ -76,809 +159,940 @@ class MenuTableSeeder extends Seeder
             'status'=>1
         ]);
 
-        //ID:7
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'我的团队',
-            'icons'=>'fa-users',
-            'url'=>'/home/recommend/index',
-            'description' => '',
-            'parent_id'=>2,
-            'is_page'=>1,
-            'status'=>1
-        ]);
-        \App\Models\Menu::find(7)->moveNear(6);
-
         //ID:8
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'修改资料',
-            'icons'=>'fa-database',
-            'url'=>'/home/personage/index',
-            'description' => '',
-            'parent_id'=>6,
-            'is_page'=>1,
-            'status'=>1
-        ]);
-
-        //ID:9
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'修改密码',
-            'icons'=>'fa-lock',
-            'url'=>'/home/password/index',
-            'description' => '',
-            'parent_id'=>6,
-            'is_page'=>1,
-            'status'=>1
-        ]);
-
-        //ID:10
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'佣金明细',
-            'icons'=>'fa-credit-card',
-            'url'=>'',
-            'description' => '',
-            'parent_id'=>5,
-            'is_page'=>1,
-            'status'=>2
-        ]);
-
-        //ID:11
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'保险险种',
-            'icons'=>'fa-cubes',
-            'url'=>'/home/product/index',
-            'description' => '',
-            'parent_id'=>5,
-            'is_page'=>1,
-            'status'=>2
-        ]);
-
-        //ID:12
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'保险公司',
-            'icons'=>'fa-compass',
-            'url'=>'/home/firm/index',
-            'description' => '',
-            'parent_id'=>5,
-            'is_page'=>1,
-            'status'=>2
-        ]);
-
-        //ID:13
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'团队概览',
-            'icons'=>'fa-bar-chart-o',
-            'url'=>'/admin/index',
-            'description' => '',
-            'parent_id'=>3,
-            'is_page'=>1,
-            'status'=>1
-        ]);
-
-        //ID:14
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'台账明细',
-            'icons'=>'fa-cny',
-            'url'=>'/admin/order/index',
-            'description' => '',
-            'parent_id'=>3,
-            'is_page'=>1,
-            'status'=>1
-        ]);
-
-        //ID:15
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'用户管理',
-            'icons'=>'fa-users',
-            'url'=>'',
-            'description' => '',
-            'parent_id'=>3,
-            'status'=>1
-        ]);
-
-        //ID:16
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'团队管理',
-            'icons'=>'fa-group',
-            'url'=>'/admin/team/index',
-            'description' => '',
-            'is_page'=>1,
-            'parent_id'=>15,
-            'status'=>1
-        ]);
-
-        //ID:17
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'员工管理',
-            'icons'=>'fa-user-plus',
-            'url'=>'/admin/member/index',
-            'description' => '',
-            'is_page'=>1,
-            'parent_id'=>15,
-            'status'=>2
-        ]);
-
-        //ID:18
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'权限管理',
-            'icons'=>'fa-sitemap',
-            'url'=>'/admin/role/index',
-            'description' => '',
-            'is_page'=>1,
-            'parent_id'=>15,
-            'status'=>1
-        ]);
-
-        //ID:19
-        factory(\App\Models\Menu::class)->create([
+        $userMenu = factory(\App\Models\Menu::class)->create([
             'name'=>'登录用户',
             'icons'=>'fa-user',
             'url'=>'/admin/user/index',
-            'description' => '',
-            'parent_id'=>15,
+            'description' => '登录用户',
+            'parent_id'=>5,
+            'is_page'=>1,
+            'status'=>2
+        ]);
+        //ID:9-14
+        $this->createRessorceMenu($userMenu,'登录用户');
+
+        //ID:15
+        $roleMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'权限管理',
+            'icons'=>'fa-sitemap',
+            'url'=>'/admin/role/index',
+            'description' => '角色列表',
+            'parent_id'=>5,
             'is_page'=>1,
             'status'=>1
         ]);
-
-        //ID:20
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'险种管理',
-            'icons'=>'fa-cubes',
-            'url'=>'',
-            'description' => '',
-            'parent_id'=>3,
-            'status'=>1
-        ]);
-
-        //ID:21
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'保险公司',
-            'icons'=>'fa-flickr',
-            'url'=>'/admin/firm/index',
-            'description' => '',
-            'is_page'=>1,
-            'parent_id'=>20,
-            'status'=>1
-        ]);
+        //ID:16-21
+        $this->createRessorceMenu($roleMenu,'角色');
 
         //ID:22
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'险种列表',
-            'icons'=>'fa-cubes',
-            'url'=>'/admin/product/index',
-            'description' => '',
-            'is_page'=>1,
-            'parent_id'=>20,
-            'status'=>1
-        ]);
-
-        //ID:23
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'交费年期',
-            'icons'=>'fa-calendar-times-o',
-            'url'=>'/admin/year/index',
-            'description' => '',
-            'is_page'=>1,
-            'parent_id'=>20,
-            'status'=>1
-        ]);
-
-        //ID:24
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'支付模式',
-            'icons'=>'fa-credit-card',
-            'url'=>'/admin/pmodel/index',
-            'description' => '',
-            'is_page'=>1,
-            'parent_id'=>20,
-            'status'=>2
-        ]);
-
-        //ID:25
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'其它设置',
-            'icons'=>'fa-qrcode',
-            'url'=>'',
-            'description' => '',
-            'parent_id'=>3,
-            'status'=>1
-        ]);
-
-        //ID:26
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'银行管理',
-            'icons'=>'fa-bank ',
-            'url'=>'/admin/bank/index',
-            'description' => '',
-            'is_page'=>1,
-            'parent_id'=>25,
-            'status'=>1
-        ]);
-
-        //ID:27
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'系统设置',
-            'icons'=>'fa-qrcode',
-            'url'=>'/admin/config/index',
-            'description' => '',
-            'parent_id'=>25,
+        $menu = factory(\App\Models\Menu::class)->create([
+            'name'=>'菜单设置',
+            'icons'=>'fa-bars',
+            'url'=>'/admin/menu/index',
+            'description' => '菜单列表',
+            'parent_id'=>6,
             'is_page'=>1,
             'status'=>1
         ]);
-
-        //ID:28
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'用户推荐列表',
-            'icons'=>'',
-            'url'=>'/home/recommend/list',
-            'description' => '',
-            'parent_id'=>9,
-            'status'=>2
-        ]);
-
-        //ID:29
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'批量导入',
-            'icons'=>'fa-file-excel-o',
-            'url'=>'/admin/tolead/index',
-            'description' => '',
-            'is_page'=>1,
-            'parent_id'=>25,
-            'status'=>1
-        ]);
-
+        //ID:23-29
+        $this->createRessorceMenu($menu,'菜单');
         //ID:30
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'银行翻页',
-            'icons'=>'',
-            'url'=>'/admin/bank/list',
-            'description' => '',
-            'parent_id'=>26,
-            'status'=>1
-        ]);
-
-        //ID:31
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'编辑银行',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/bank/edit',
-            'description' => '',
-            'is_page'=>1,
-            'parent_id'=>26,
-            'status'=>1
-        ]);
-
-        //ID:32
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'系统设置翻页',
-            'icons'=>'',
-            'url'=>'/admin/config/list',
-            'description' => '',
-            'parent_id'=>27,
-            'status'=>1
-        ]);
-
-        //ID:33
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'系统设置编辑',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/config/edit',
-            'description' => '',
-            'parent_id'=>27,
+        $configMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'系统设置',
+            'icons'=>'fa-gear',
+            'url'=>'/admin/config/index',
+            'description' => '配置列表',
+            'parent_id'=>6,
             'is_page'=>1,
             'status'=>1
         ]);
-
-        //ID:34
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'合作公司翻页',
-            'icons'=>'',
-            'url'=>'/home/firm/list',
-            'description' => '',
-            'parent_id'=>12,
-            'status'=>1
-        ]);
-
-        //ID:35
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'代理险种分页',
-            'icons'=>'',
-            'url'=>'/home/product/list',
-            'description' => '',
-            'parent_id'=>11,
-            'status'=>1
-        ]);
+        //ID:31-35
+        $this->createRessorceMenu($configMenu,'配置');
 
         //ID:36
         factory(\App\Models\Menu::class)->create([
-            'name'=>'佣金明细分页',
-            'icons'=>'fa-credit-card',
-            'url'=>'/home/bill/list',
-            'description' => '',
-            'parent_id'=>5,
-            'status'=>2
+            'name'=>'个人资料',
+            'icons'=>'fa-heart',
+            'url'=>'/admin/personage/index',
+            'description' => '修改资料页面',
+            'parent_id'=>7,
+            'is_page'=>1,
+            'method'=>3,
+            'status'=>1
         ]);
 
         //ID:37
         factory(\App\Models\Menu::class)->create([
-            'name'=>'删除银行',
-            'icons'=>'',
-            'url'=>'/admin/bank/destroy',
-            'description' => '',
-            'parent_id'=>26,
+            'name'=>'修改密码',
+            'icons'=>'fa-lock',
+            'url'=>'/admin/personage/password',
+            'description' => '修改资料页面',
+            'parent_id'=>7,
+            'is_page'=>1,
             'status'=>1
         ]);
 
         //ID:38
         factory(\App\Models\Menu::class)->create([
-            'name'=>'团队管理分页',
-            'icons'=>'fa-group',
-            'url'=>'/admin/team/list',
-            'description' => '',
-            'parent_id'=>16,
+            'name'=>'操作日志',
+            'icons'=>'fa-mouse-pointer',
+            'url'=>'/admin/log/index',
+            'description' => '用户操作日志',
+            'parent_id'=>5,
+            'is_page'=>1,
             'status'=>1
         ]);
 
         //ID:39
         factory(\App\Models\Menu::class)->create([
-            'name'=>'团队管理编辑',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/team/edit',
+            'name'=>'首页',
+            'icons'=>'fa-home',
+            'url'=>'/home/index',
             'description' => '',
-            'parent_id'=>16,
+            'parent_id'=>3,
             'is_page'=>1,
             'status'=>1
         ]);
 
         //ID:40
         factory(\App\Models\Menu::class)->create([
-            'name'=>'删除团队',
-            'icons'=>'',
-            'url'=>'/admin/team/destroy',
+            'name'=>'个人中心',
+            'icons'=>'fa-database',
+            'url'=>'/home/personage/index',
             'description' => '',
-            'parent_id'=>16,
+            'parent_id'=>3,
             'status'=>1
         ]);
 
         //ID:41
         factory(\App\Models\Menu::class)->create([
-            'name'=>'成员分页',
-            'icons'=>'',
-            'url'=>'/admin/member/list',
+            'name'=>'消息通知',
+            'icons'=>'fa-envelope-o',
+            'url'=>'/home/notification/index',
             'description' => '',
-            'parent_id'=>17,
+            'parent_id'=>40,
+            'is_page'=>1,
             'status'=>1
         ]);
 
         //ID:42
         factory(\App\Models\Menu::class)->create([
-            'name'=>'成员编辑',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/member/edit',
+            'name'=>'个人资料',
+            'icons'=>'fa-heart',
+            'url'=>'/home/personage/index',
             'description' => '',
-            'parent_id'=>17,
+            'parent_id'=>40,
             'is_page'=>1,
             'status'=>1
         ]);
 
         //ID:43
         factory(\App\Models\Menu::class)->create([
-            'name'=>'删除成员',
-            'icons'=>'',
-            'url'=>'/admin/member/destroy',
+            'name'=>'修改密码',
+            'icons'=>'fa-lock',
+            'url'=>'/home/personage/password',
             'description' => '',
-            'parent_id'=>17,
+            'parent_id'=>40,
+            'is_page'=>1,
             'status'=>1
         ]);
+
 
         //ID:44
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'角色分页',
-            'icons'=>'',
-            'url'=>'/admin/role/list',
-            'description' => '',
-            'parent_id'=>18,
-            'status'=>1
-        ]);
-
-        //ID:45
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'角色编辑',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/role/edit',
-            'description' => '',
-            'parent_id'=>18,
+        $userMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'后台用户',
+            'icons'=>'fa-user-secret',
+            'url'=>'/admin/admin/index',
+            'description' => '后台用户',
+            'parent_id'=>5,
             'is_page'=>1,
             'status'=>1
         ]);
 
-        //ID:46
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'删除角色',
-            'icons'=>'',
-            'url'=>'/admin/role/destroy',
-            'description' => '',
-            'parent_id'=>18,
-            'status'=>1
-        ]);
-
-        //ID:47
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'用户分页',
-            'icons'=>'',
-            'url'=>'/admin/user/list',
-            'description' => '',
-            'parent_id'=>19,
-            'status'=>1
-        ]);
-
-        //ID:48
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'编辑用户',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/user/edit',
-            'description' => '',
-            'parent_id'=>19,
-            'is_page'=>1,
-            'status'=>1
-        ]);
-
-        //ID:49
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'删除用户',
-            'icons'=>'',
-            'url'=>'/admin/user/destroy',
-            'description' => '',
-            'parent_id'=>19,
-            'status'=>1
-        ]);
-
-        //ID:50
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'品牌分页',
-            'icons'=>'',
-            'url'=>'/admin/firm/list',
-            'description' => '',
-            'parent_id'=>21,
-            'status'=>1
-        ]);
+        //ID:45-50
+        $this->createRessorceMenu($userMenu,'管理员');
 
         //ID:51
         factory(\App\Models\Menu::class)->create([
-            'name'=>'品牌编辑',
+            'name'=>'日志详情',
             'icons'=>'fa-edit',
-            'url'=>'/admin/firm/edit',
-            'description' => '',
-            'parent_id'=>21,
+            'url'=>'/admin/log/edit',
+            'description' => '用户操作日志详情',
+            'parent_id'=>38,
             'is_page'=>1,
-            'status'=>1
+            'status'=>2
         ]);
 
         //ID:52
         factory(\App\Models\Menu::class)->create([
-            'name'=>'删除品牌',
-            'icons'=>'',
-            'url'=>'/admin/firm/destroy',
+            'name'=>'代理人员',
+            'icons'=>'fa-user-md',
+            'url'=>'',
             'description' => '',
-            'parent_id'=>21,
+            'parent_id'=>2,
             'status'=>1
         ]);
+
 
         //ID:53
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'险种分页',
-            'icons'=>'',
-            'url'=>'/admin/product/list',
-            'description' => '',
-            'parent_id'=>22,
-            'status'=>1
-        ]);
-
-        //ID:54
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'险种编辑',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/product/edit',
-            'description' => '',
-            'parent_id'=>22,
+        $memberMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'代理人员',
+            'icons'=>'fa-user-md',
+            'url'=>'/admin/member/index',
+            'description' => '代理人员',
+            'parent_id'=>52,
             'is_page'=>1,
             'status'=>1
         ]);
-
-        //ID:55
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'删除险种',
-            'icons'=>'',
-            'url'=>'/admin/product/destroy',
-            'description' => '',
-            'parent_id'=>22,
-            'status'=>1
-        ]);
-
-        //ID:56
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'年期分页',
-            'icons'=>'',
-            'url'=>'/admin/year/list',
-            'description' => '',
-            'parent_id'=>23,
-            'status'=>1
-        ]);
-
-        //ID:57
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'年期编辑',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/year/edit',
-            'description' => '',
-            'parent_id'=>23,
-            'is_page'=>1,
-            'status'=>1
-        ]);
-
-        //ID:58
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'删除年期',
-            'icons'=>'',
-            'url'=>'/admin/year/destroy',
-            'description' => '',
-            'parent_id'=>23,
-            'status'=>1
-        ]);
-
-        //ID:59
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'支付方式分页',
-            'icons'=>'',
-            'url'=>'/admin/pmodel/list',
-            'description' => '',
-            'parent_id'=>24,
-            'status'=>1
-        ]);
+        //ID:54-59
+        $this->createRessorceMenu($memberMenu,'代理人');
 
         //ID:60
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'支付方式编辑',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/pmodel/edit',
-            'description' => '',
-            'parent_id'=>24,
+        $teamMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'代理团队',
+            'icons'=>'fa-users',
+            'url'=>'/admin/team/index',
+            'description' => '代理团队',
+            'parent_id'=>52,
             'is_page'=>1,
             'status'=>1
         ]);
-
-        //ID:61
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'删除支付方式',
-            'icons'=>'',
-            'url'=>'/admin/pmodel/destroy',
-            'description' => '',
-            'parent_id'=>24,
-            'status'=>1
-        ]);
-
-        //ID:62
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'台账分页',
-            'icons'=>'',
-            'url'=>'/admin/order/list',
-            'description' => '',
-            'parent_id'=>14,
-            'status'=>2
-        ]);
-
-        //ID:63
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'台账编辑',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/order/edit',
-            'description' => '',
-            'parent_id'=>14,
-            'is_page'=>1,
-            'status'=>2
-        ]);
-
-        //ID:64
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'删除台账',
-            'icons'=>'',
-            'url'=>'/admin/order/destroy',
-            'description' => '',
-            'parent_id'=>14,
-            'status'=>2
-        ]);
-
-        //ID:65
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'查询推荐人',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/user/recommends',
-            'description' => '',
-            'parent_id'=>48,
-            'status'=>2
-        ]);
-
-        //ID:66
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'查询连带责任人',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/user/rusers',
-            'description' => '',
-            'parent_id'=>48,
-            'status'=>2
-        ]);
+        //ID:61-66
+        $this->createRessorceMenu($teamMenu,'团队');
 
         //ID:67
         factory(\App\Models\Menu::class)->create([
-            'name'=>'用户导出',
-            'icons'=>'fa-file-excel-o',
-            'url'=>'/admin/user/export',
-            'description' => '',
-            'parent_id'=>19,
-            'is_page'=>2,
-            'status'=>2
-        ]);
-
-        //ID:68
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'审核台账',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/order/update-valid',
-            'description' => '',
-            'parent_id'=>14,
-            'status'=>2
-        ])->delete();
-
-        //ID:69
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'修改用户状态',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/user/update-status',
-            'description' => '',
-            'parent_id'=>48,
-            'is_page'=>1,
-            'status'=>1
-        ]);
-
-        //ID:70
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'设置高级职级',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/user/set-senior-rank',
-            'description' => '',
-            'parent_id'=>48,
-            'is_page'=>1,
-            'status'=>1
-        ]);
-
-        //ID:71
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'审核台账',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/order/update-valid',
-            'description' => '',
-            'parent_id'=>14,
-            'status'=>2
-        ]);
-
-        //ID:72
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'台账状态修改',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/order/update-status',
-            'description' => '',
-            'parent_id'=>63,
-            'status'=>2
-        ]);
-
-        //ID:73
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'管理津贴',
+            'name'=>'险种管理',
             'icons'=>'fa-cubes',
-            'url'=>'/admin/bill/index',
-            'description' => '',
-            'is_page'=>1,
-            'parent_id'=>3,
-            'status'=>1
-        ]);
-
-        \App\Models\Menu::find(73)->moveNear(14);
-
-        //ID:74
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'管理津贴分页',
-            'icons'=>'',
-            'url'=>'/admin/bill/list',
-            'description' => '',
-            'parent_id'=>73,
-            'status'=>2
-        ]);
-
-        //ID:75
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'管理津贴编辑',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/bill/edit',
-            'description' => '',
-            'parent_id'=>73,
-            'is_page'=>1,
-            'status'=>2
-        ]);
-
-        //ID:76
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'删除管理津贴',
-            'icons'=>'',
-            'url'=>'/admin/bill/destroy',
-            'description' => '',
-            'parent_id'=>73,
-            'status'=>2
-        ]);
-
-        //ID:77
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'保单查询',
-            'icons'=>'fa-users',
-            'url'=>'/home/order/index',
+            'url'=>'',
             'description' => '',
             'parent_id'=>2,
+            'status'=>1
+        ]);
+        //ID:68
+        $firmMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'保险公司',
+            'icons'=>'fa-hand-pointer-o',
+            'url'=>'/admin/firm/index',
+            'description' => '',
+            'parent_id'=>67,
             'is_page'=>1,
             'status'=>1
         ]);
-        \App\Models\Menu::find(77)->moveNear(4,'after');
+        //ID:69-74
+        $this->createRessorceMenu($firmMenu,'保险公司');
 
-        //ID:78
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'保单查询分页',
-            'icons'=>'',
-            'url'=>'/home/order/list',
+        //ID:75
+        $classifyMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'险种分类',
+            'icons'=>'fa-map',
+            'url'=>'/admin/classify/index',
             'description' => '',
-            'parent_id'=>77,
-            'status'=>2
-        ]);
-
-        //ID:79
-        factory(\App\Models\Menu::class)->create([
-            'name'=>'保单查询查看',
-            'icons'=>'fa-edit',
-            'url'=>'/home/order/show',
-            'description' => '',
-            'parent_id'=>77,
+            'parent_id'=>67,
             'is_page'=>1,
-            'status'=>2
+            'status'=>1
+        ]);
+        //ID:76-81
+        $this->createRessorceMenu($classifyMenu,'险种分类');
+
+        //ID:82
+        $productMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'险种列表',
+            'icons'=>'fa-cubes',
+            'url'=>'/admin/product/index',
+            'description' => '',
+            'parent_id'=>67,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+        //ID:83-88
+        $this->createRessorceMenu($productMenu,'险种');
+
+        //ID:89
+        $yearMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'交费年期',
+            'icons'=>'fa-clock-o',
+            'url'=>'/admin/year/index',
+            'description' => '',
+            'parent_id'=>67,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+        //ID:90-95
+        $this->createRessorceMenu($yearMenu,'交费年期');
+
+        //ID:96
+        $bankMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'银行管理',
+            'icons'=>'fa-bank',
+            'url'=>'/admin/bank/index',
+            'description' => '',
+            'parent_id'=>6,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+        //ID:97-102
+        $this->createRessorceMenu($bankMenu,'银行');
+
+        //ID:103
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'批量导入',
+            'icons'=>'fa-file-excel-o',
+            'url'=>'/admin/tolead/index',
+            'description' => '',
+            'parent_id'=>6,
+            'is_page'=>1,
+            'status'=>1
         ]);
 
-        //ID:80
+        //ID:104
         factory(\App\Models\Menu::class)->create([
-            'name'=>'团队业绩',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/team-order/index',
+            'name'=>'消息通知',
+            'icons'=>'fa-envelope-o',
+            'url'=>'/admin/notification/index',
+            'description' => '',
+            'parent_id'=>7,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+
+        //ID:105
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'台账管理',
+            'icons'=>'fa-list',
+            'url'=>'',
+            'description' => '',
+            'parent_id'=>2,
+            'status'=>1
+        ]);
+
+
+        //ID:106
+        $bankMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'保单管理',
+            'icons'=>'fa-newspaper-o',
+            'url'=>'/admin/order/index',
+            'description' => '',
+            'parent_id'=>105,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+        //ID:107-112
+        $this->createRessorceMenu($bankMenu,'保单');
+
+        //ID:113
+        $bankMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'预期佣金',
+            'icons'=>'fa-list-ul',
+            'url'=>'/admin/pay/index',
+            'description' => '',
+            'parent_id'=>105,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+        //ID:114-119
+        $this->createRessorceMenu($bankMenu,'台账');
+
+        //ID:120
+        $bankMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'结算佣金',
+            'icons'=>'fa-money',
+            'url'=>'/admin/bill/index',
+            'description' => '',
+            'parent_id'=>105,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+        //ID:121-126
+        $this->createRessorceMenu($bankMenu,'佣金');
+
+        //ID:127
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'保单查询',
+            'icons'=>'fa-newspaper-o',
+            'url'=>'/home/order/index',
             'description' => '',
             'parent_id'=>3,
             'is_page'=>1,
             'status'=>1
         ]);
 
-        \App\Models\Menu::find(80)->moveNear(13,'after');
-
-        //ID:81
+        //ID:128
         factory(\App\Models\Menu::class)->create([
-            'name'=>'团队业绩翻页',
-            'icons'=>'fa-edit',
-            'url'=>'/admin/team-order/list',
+            'name'=>'预期佣金',
+            'icons'=>'fa-list-ul',
+            'url'=>'/home/pay/index',
             'description' => '',
-            'parent_id'=>80,
+            'parent_id'=>3,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+
+        //ID:129
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'结算佣金',
+            'icons'=>'fa-money',
+            'url'=>'/home/bill/index',
+            'description' => '',
+            'parent_id'=>3,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+        //ID:130
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'我的团队',
+            'icons'=>'fa-users',
+            'url'=>'/home/member/index',
+            'description' => '',
+            'parent_id'=>3,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+
+        //ID:131
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'删除日志',
+            'icons'=>'fa-trash-o',
+            'url'=>'/admin/log/destroy',
+            'description' => '用户操作日志详情',
+            'method'=>'2',
+            'parent_id'=>38,
+            'status'=>2
+        ]);
+
+        //ID:132
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'操作日志分页',
+            'icons'=>'fa-trash-o',
+            'url'=>'/admin/log/list',
+            'description' => '用户操作日志分页数据',
+            'parent_id'=>38,
+            'status'=>2
+        ]);
+        //ID:133
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'导出操作日志',
+            'icons'=>'fa-file-excel-o',
+            'url'=>'/admin/log/export',
+            'description' => '导出用户操作日志数据',
+            'parent_id'=>38,
+            'status'=>2
+        ]);
+
+        //ID:134
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'消息通知分页',
+            'icons'=>'fa-list',
+            'url'=>'/home/notification/list',
+            'description' => '消息通知分页数据',
+            'parent_id'=>41,
+            'status'=>2
+        ]);
+
+        //ID:135
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'消息通知分页',
+            'icons'=>'fa-list',
+            'url'=>'/admin/notification/list',
+            'description' => '消息通知分页数据',
+            'parent_id'=>104,
+            'status'=>2
+        ]);
+
+        //ID:136
+        $memberMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'代理职级',
+            'icons'=>'fa-user-plus',
+            'url'=>'/admin/grade/index',
+            'description' => '代理职级',
+            'parent_id'=>52,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+        //ID:137-142
+        $this->createRessorceMenu($memberMenu,'代理职级');
+
+        //ID:143编辑页面
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'编辑查看消息',
+            'icons'=>'fa-edit',
+            'url'=>'/admin/notification/edit',
+            'description' => '消息编辑查看页面',
+            'parent_id'=>104,
+            'is_page'=>1,
+            'status'=>2
+        ]);
+
+        //ID:144删除数据接口
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'删除消息',
+            'icons'=>'fa-trash-o',
+            'url'=>'/admin/notification/destroy',
+            'description' => '删除消息数据',
+            'parent_id'=>104,
+            'method'=>'2',
+            'status'=>2
+        ]);
+
+        //ID:145编辑页面
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'编辑查看消息',
+            'icons'=>'fa-edit',
+            'url'=>'/home/notification/edit',
+            'description' => '消息编辑查看页面',
+            'parent_id'=>41,
+            'is_page'=>1,
+            'status'=>2
+        ]);
+
+        //ID:146删除数据接口
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'删除消息',
+            'icons'=>'fa-trash-o',
+            'url'=>'/home/notification/destroy',
+            'description' => '删除消息数据',
+            'parent_id'=>41,
+            'method'=>'2',
+            'status'=>2
+        ]);
+
+        //ID:147代理人工号获取接口
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'代理人工号获取',
+            'icons'=>'fa-search',
+            'url'=>'/admin/member/job-number',
+            'description' => '代理人工号获取',
+            'parent_id'=>55,
+            'status'=>2
+        ]);
+
+        //ID:148
+        $productMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'险种年期',
+            'icons'=>'fa-calendar-times-o',
+            'url'=>'/admin/product-year/index',
+            'description' => '',
+            'parent_id'=>67,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+        //ID:149-154
+        $this->createRessorceMenu($productMenu,'险种年期');
+
+        //ID:155
+        $productMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'险种佣金率',
+            'icons'=>'fa-registered',
+            'url'=>'/admin/rate/index',
+            'description' => '',
+            'parent_id'=>67,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+        //ID:156-161
+        $this->createRessorceMenu($productMenu,'险种佣金率');
+
+        //ID:162
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'转换成佣金率表',
+            'icons'=>'fa-registered',
+            'url'=>'/admin/tolead/convert-to-rate',
+            'description' => '',
+            'method'=>'2',
+            'parent_id'=>103,
+            'status'=>2
+        ]);
+
+        //ID:163
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'转换成产品表',
+            'icons'=>'fa-cubes',
+            'url'=>'/admin/tolead/convert-to-product',
+            'description' => '',
+            'method'=>'2',
+            'parent_id'=>103,
+            'status'=>2
+        ]);
+
+        //ID:164
+        $bankMenu = factory(\App\Models\Menu::class)->create([
+            'name'=>'已购保险',
+            'icons'=>'fa-outdent',
+            'url'=>'/admin/order-product/index',
+            'description' => '',
+            'parent_id'=>105,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+        //ID:165-170
+        $this->createRessorceMenu($bankMenu,'已购保险');
+        //ID:171 创建订单险种查询权限
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'险种查询',
+            'icons'=>'fa-cubes',
+            'url'=>'/admin/product/search',
+            'description' => '',
+            'parent_id'=>108,
+            'status'=>2
+        ]);
+
+        //ID:172 保单审核
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'审核保单',
+            'icons'=>'fa-trash-o',
+            'url'=>'/admin/order/audit',
+            'description' => '审核保单',
+            'parent_id'=>106,
+            'method'=>'2',
+            'status'=>2
+        ]);
+
+        //ID:173 台账审核
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'审核台账',
+            'icons'=>'fa-trash-o',
+            'url'=>'/admin/pay/audit',
+            'description' => '审核台账',
+            'parent_id'=>113,
+            'method'=>'2',
+            'status'=>2
+        ]);
+
+        //ID:174 佣金发放
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'佣金发放',
+            'icons'=>'fa-trash-o',
+            'url'=>'/admin/bill/audit',
+            'description' => '佣金发放',
+            'parent_id'=>120,
+            'method'=>'2',
+            'status'=>2
+        ]);
+
+        //ID:175
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'保单分页',
+            'icons'=>'fa-list',
+            'url'=>'/home/order/list',
+            'description' => '保单分页数据',
+            'parent_id'=>127,
+            'status'=>2
+        ]);
+
+        //ID:176
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'查看保单',
+            'icons'=>'fa-edit',
+            'url'=>'/home/order/edit',
+            'description' => '保单详细页面',
+            'parent_id'=>127,
+            'is_page'=>1,
+            'status'=>2
+        ]);
+
+        //ID:177 保险明细
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'保险明细',
+            'icons'=>'fa-outdent',
+            'url'=>'/home/order-product/index',
+            'description' => '',
+            'parent_id'=>3,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+
+        //ID:178
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'保险明细分页',
+            'icons'=>'fa-list',
+            'url'=>'/home/order-product/list',
+            'description' => '保险明细分页数据',
+            'parent_id'=>177,
+            'status'=>2
+        ]);
+
+        //ID:179
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'查看保险明细',
+            'icons'=>'fa-edit',
+            'url'=>'/home/order-product/edit',
+            'description' => '保险明细页面',
+            'parent_id'=>177,
+            'is_page'=>1,
+            'status'=>2
+        ]);
+
+        //ID:180
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'台账分页',
+            'icons'=>'fa-list',
+            'url'=>'/home/pay/list',
+            'description' => '台账分页数据',
+            'parent_id'=>128,
+            'status'=>2
+        ]);
+
+        //ID:181
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'查看台账',
+            'icons'=>'fa-edit',
+            'url'=>'/home/pay/edit',
+            'description' => '台账详细页面',
+            'parent_id'=>128,
+            'is_page'=>1,
+            'status'=>2
+        ]);
+
+        //ID:182
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'佣金分页',
+            'icons'=>'fa-list',
+            'url'=>'/home/bill/list',
+            'description' => '佣金分页数据',
+            'parent_id'=>129,
+            'status'=>2
+        ]);
+
+        //ID:183
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'查看佣金',
+            'icons'=>'fa-edit',
+            'url'=>'/home/bill/edit',
+            'description' => '佣金详细页面',
+            'parent_id'=>129,
+            'is_page'=>1,
+            'status'=>2
+        ]);
+
+        //ID:184
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'我的团队分页',
+            'icons'=>'fa-list',
+            'url'=>'/home/member/list',
+            'description' => '我的团队分页数据',
+            'parent_id'=>130,
+            'status'=>2
+        ]);
+
+        //ID:185
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'查看我的团队',
+            'icons'=>'fa-edit',
+            'url'=>'/home/member/edit',
+            'description' => '我的团队详细页面',
+            'parent_id'=>130,
+            'is_page'=>1,
+            'status'=>2
+        ]);
+
+        //ID:186 批量台账审核
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'批量审核台账',
+            'icons'=>'fa-trash-o',
+            'url'=>'/admin/pay/batch-audit',
+            'description' => '批量审核台账',
+            'parent_id'=>113,
+            'method'=>'2',
+            'status'=>2
+        ]);
+
+        //ID:187 批量台账带条件审核
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'批量条件审核台账',
+            'icons'=>'fa-trash-o',
+            'url'=>'/admin/pay/condition-audit',
+            'description' => '批量条件审核台账',
+            'parent_id'=>113,
+            'method'=>'2',
+            'status'=>2
+        ]);
+
+        //ID:188 佣金发放
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'批量佣金发放',
+            'icons'=>'fa-trash-o',
+            'url'=>'/admin/bill/batch-audit',
+            'description' => '批量佣金发放',
+            'parent_id'=>120,
+            'method'=>'2',
+            'status'=>2
+        ]);
+
+        //ID:189 佣金带条件发放
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'批量佣金发放',
+            'icons'=>'fa-trash-o',
+            'url'=>'/admin/bill/condition-audit',
+            'description' => '批量佣金发放',
+            'parent_id'=>120,
+            'method'=>'2',
+            'status'=>2
+        ]);
+
+        //ID:190 修改代理人工号
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'修改代理人工号',
+            'icons'=>'fa-trash-o',
+            'url'=>'/admin/member/update-uname',
+            'description' => '修改代理人工号',
+            'parent_id'=>55,
+            'method'=>3,
+            'status'=>2
+        ]);
+
+        //ID:191 导出代理人结佣架构
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'导出代理人结佣架构',
+            'icons'=>'fa-file-excel-o',
+            'url'=>'/admin/member/export-organization',
+            'description' => '导出代理人结佣架构',
+            'parent_id'=>55,
+            'method'=>1,
+            'status'=>2
+        ]);
+
+        //ID:192 代理人工资账单
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'工资账单',
+            'icons'=>'fa-coffee',
+            'url'=>'/admin/member/bill',
+            'description' => '代理人工资账单',
+            'parent_id'=>52,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+
+        //ID:193
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'工资账单分页',
+            'icons'=>'fa-list',
+            'url'=>'/home/member/bill-list',
+            'description' => '工资账单分页数据',
+            'parent_id'=>193,
+            'status'=>2
+        ]);
+
+        //ID:194 导出代理人工资账单
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'导出工资账单',
+            'icons'=>'fa-file-excel-o',
+            'url'=>'/admin/member/export-bill',
+            'description' => '导出代理人工资账单',
+            'parent_id'=>193,
+            'status'=>2
+        ]);
+
+        //ID:195
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'工资账单',
+            'icons'=>'fa-coffee',
+            'url'=>'/home/bill/month',
+            'description' => '',
+            'parent_id'=>40,
+            'is_page'=>1,
+            'status'=>1
+        ]);
+
+        //ID:196
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'工资账单分页',
+            'icons'=>'fa-list',
+            'url'=>'/home/bill/month-list',
+            'description' => '工资账单分页数据',
+            'parent_id'=>195,
+            'status'=>2
+        ]);
+
+        //ID:197
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'导出佣金对账单',
+            'icons'=>'fa-file-excel-o',
+            'url'=>'/admin/pay/check-list',
+            'description' => '导出佣金对账单',
+            'parent_id'=>120,
+            'status'=>2
+        ]);
+
+        //ID:198
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'转换成佣金率表',
+            'icons'=>'fa-registered',
+            'url'=>'/admin/tolead/convert-to-pay',
+            'description' => '',
+            'method'=>'2',
+            'parent_id'=>103,
+            'status'=>2
+        ]);
+
+        //ID:199 搜索代理人
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'代理人查询',
+            'icons'=>'fa-cubes',
+            'url'=>'/admin/member/search',
+            'description' => '',
+            'parent_id'=>108,
+            'status'=>2
+        ]);
+
+        //ID:200 查询产品信息
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'查询产品信息',
+            'icons'=>'fa-cubes',
+            'url'=>'/admin/product/one-years-and-pmodel',
+            'description' => '',
+            'parent_id'=>108,
+            'status'=>2
+        ]);
+
+        //ID:201 代理人搜索
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'查询推荐人列表',
+            'icons'=>'fa-cubes',
+            'url'=>'/admin/member/optional-parent',
+            'description' => '',
+            'parent_id'=>55,
+            'status'=>2
+        ]);
+
+        //ID:202
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'查询推荐人团队ID',
+            'icons'=>'fa-cubes',
+            'url'=>'/admin/member/one',
+            'description' => '',
+            'parent_id'=>55,
+            'status'=>2
+        ]);
+
+        //ID:203
+        factory(\App\Models\Menu::class)->create([
+            'name'=>'前端代理人导出',
+            'icons'=>'fa-file-excel-o',
+            'url'=>'/home/member/export',
+            'description' => '前端代理人导出',
+            'parent_id'=>130,
             'status'=>2
         ]);
 
 
+        //重新排序整理菜单
+        \App\Models\Menu::find(52)->moveNear(5,'after');
+        \App\Models\Menu::find(105)->moveNear(52,'after');
+        \App\Models\Menu::find(67)->moveNear(105,'after');
+        \App\Models\Menu::find(15)->moveNear(8,'before');
+        \App\Models\Menu::find(44)->moveNear(15,'before');
+        \App\Models\Menu::find(164)->moveNear(106,'after');
+        \App\Models\Menu::find(82)->moveNear(68,'before');
+        \App\Models\Menu::find(177)->moveNear(127,'after');
+        \App\Models\Menu::find(130)->moveNear(39,'after');
+        \App\Models\Menu::find(40)->moveNear(129,'after');
+        \App\Models\Menu::find(195)->moveNear(41,'before');
 
 
     }
 
-    /**
-     * 创建资源路由
-     */
-    public function seedResource(){
 
-    }
+
+
 }
