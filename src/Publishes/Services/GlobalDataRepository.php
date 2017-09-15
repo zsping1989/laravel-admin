@@ -54,7 +54,7 @@ class GlobalDataRepository implements GlobalDataContract{
                 ->pluck('name')
                 ->implode('|')?:'后台管理员';
         }else if($main && $main->member){
-            $global['user']['role_name'] = '代理人员';
+            $global['user']['role_name'] = '会员账户';
         }else{
             $global['user']['role_name'] = '普通游客';
         }

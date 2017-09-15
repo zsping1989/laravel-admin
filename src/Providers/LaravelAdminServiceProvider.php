@@ -19,19 +19,28 @@ class LaravelAdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //需要生成的迁徙文件
+        //需要发布的代码
         $this->publishes([
-            __DIR__.'/../Publishes/database/migrations' => database_path('migrations'),
-            __DIR__.'/../Publishes/database/seeds' => database_path('seeds'),
-            __DIR__.'/../Publishes/Models' => app_path('Models')
+            __DIR__.'/../Publishes/configs' => config_path(), //配置文件
+            __DIR__.'/../Publishes/Controllers' => app_path('Http/Controllers'), //控制器
+            __DIR__.'/../Publishes/database' => database_path(), //表迁徙及填充文件
+            __DIR__.'/../Publishes/Middleware' => app_path('Http/Middleware'), //中间件注册
+            __DIR__.'/../Publishes/Models' => app_path('Models'), //模型
+            __DIR__.'/../Publishes/Notifications' => app_path('Notifications'), //消息通知
+            __DIR__.'/../Publishes/public' => public_path(), //前端样式
+            __DIR__.'/../Publishes/resources' => resource_path(), //前端页面
+            __DIR__.'/../Publishes/routes' => base_path('routes'), //路由注册
+            __DIR__.'/../Publishes/Services' => app_path('Services'), //页面公共数据
+            __DIR__.'/../Publishes/User.php' => app_path(), //用户模型
+            __DIR__.'/../Publishes/Kernel.php' => app_path('Http'), //注册中间件
+            __DIR__.'/../Publishes/.env.example' => base_path(), //配置事列
+            __DIR__.'/../Publishes/package.json' => base_path(), //前端依赖包
+            __DIR__.'/../Publishes/webpack.mix.js' => base_path(), //前端编译配置
         ],'laravel-admin');
 
         //时间语言设置
         \Carbon\Carbon::setLocale(array_get(explode('-',config('app.locale')),0));
         Route::pattern('id', '[0-9]+'); //全局路由设置
-
-
-
     }
 
 
