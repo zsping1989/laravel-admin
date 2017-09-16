@@ -11,7 +11,6 @@
         "laravel/framework": ">=5.2.0",
         "php": ">=5.6.0",
         "germey/geetest": "^2.0",
-        "mylukin/ip2city": "dev-master",
         "zsping1989/resource": "^0.0.2",
         "overtrue/laravel-lang": "~3.0"
     },
