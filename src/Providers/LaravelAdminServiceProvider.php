@@ -30,11 +30,11 @@ class LaravelAdminServiceProvider extends ServiceProvider
             __DIR__.'/../Publishes/resources' => resource_path(),
             __DIR__.'/../Publishes/routes' => base_path('routes'),
             __DIR__.'/../Publishes/Services' => app_path('Services'),
-            __DIR__.'/../Publishes/.env.example' => base_path(),
-            __DIR__.'/../Publishes/Kernel.php' => app_path('Http'),
-            __DIR__.'/../Publishes/package.json' => base_path(),
-            __DIR__.'/../Publishes/User.php' => app_path(),
-            __DIR__.'/../Publishes/webpack.mix.js' => base_path()
+            __DIR__.'/../Publishes/.env.example' => base_path('.env.example'),
+            __DIR__.'/../Publishes/Kernel.php' => app_path('Http/Kernel.php'),
+            __DIR__.'/../Publishes/package.json' => base_path('package.json'),
+            __DIR__.'/../Publishes/User.php' => app_path('User.php'),
+            __DIR__.'/../Publishes/webpack.mix.js' => base_path('webpack.mix.js')
         ],'laravel-admin');
 
         //时间语言设置
