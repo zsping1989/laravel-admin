@@ -21,9 +21,20 @@ class LaravelAdminServiceProvider extends ServiceProvider
     {
         //需要生成的迁徙文件
         $this->publishes([
-            __DIR__.'/../Publishes/database/migrations' => database_path('migrations'),
-            __DIR__.'/../Publishes/database/seeds' => database_path('seeds'),
-            __DIR__.'/../Publishes/Models' => app_path('Models')
+            __DIR__.'/../Publishes/configs' => base_path('config'), //配置文件
+            __DIR__.'/../Publishes/Controllers' => app_path('Http/Controllers'), //控制器
+            __DIR__.'/../Publishes/Middleware' => app_path('Http/Middleware'), //中间件
+            __DIR__.'/../Publishes/Models' => app_path('Models'), //模型
+            __DIR__.'/../Publishes/Notifications' => app_path(),
+            __DIR__.'/../Publishes/public' => public_path(),
+            __DIR__.'/../Publishes/resources' => resource_path(),
+            __DIR__.'/../Publishes/routes' => base_path('routes'),
+            __DIR__.'/../Publishes/Services' => app_path('Services'),
+            __DIR__.'/../Publishes/.env.example' => base_path(),
+            __DIR__.'/../Publishes/Kernel.php' => app_path('Http'),
+            __DIR__.'/../Publishes/package.json' => base_path(),
+            __DIR__.'/../Publishes/User.php' => app_path(),
+            __DIR__.'/../Publishes/webpack.mix.js' => base_path()
         ],'laravel-admin');
 
         //时间语言设置
