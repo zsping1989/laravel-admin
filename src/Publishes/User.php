@@ -91,10 +91,7 @@ class User extends Authenticatable
             ->orderBy('created_at', 'desc');
     }
 
-    /* 用户拥有成员 */
-    public function member(){
-        return $this->hasOne('App\Models\Member');
-    }
+
 
 
 }

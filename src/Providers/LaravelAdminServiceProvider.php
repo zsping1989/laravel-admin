@@ -31,11 +31,11 @@ class LaravelAdminServiceProvider extends ServiceProvider
             __DIR__.'/../Publishes/resources' => resource_path(), //前端页面
             __DIR__.'/../Publishes/routes' => base_path('routes'), //路由注册
             __DIR__.'/../Publishes/Services' => app_path('Services'), //页面公共数据
-            __DIR__.'/../Publishes/User.php' => app_path(), //用户模型
-            __DIR__.'/../Publishes/Kernel.php' => app_path('Http'), //注册中间件
-            __DIR__.'/../Publishes/.env.example' => base_path(), //配置事列
-            __DIR__.'/../Publishes/package.json' => base_path(), //前端依赖包
-            __DIR__.'/../Publishes/webpack.mix.js' => base_path(), //前端编译配置
+            __DIR__.'/../Publishes/User.php' => app_path('User.php'), //用户模型
+            __DIR__.'/../Publishes/Kernel.php' => app_path('Http/Kernel.php'), //注册中间件
+            __DIR__.'/../Publishes/.env.example' => base_path('.env.example'), //配置事列
+            __DIR__.'/../Publishes/package.json' => base_path('package.json'), //前端依赖包
+            __DIR__.'/../Publishes/webpack.mix.js' => base_path('webpack.mix.js'), //前端编译配置
         ],'laravel-admin');
 
         //时间语言设置
