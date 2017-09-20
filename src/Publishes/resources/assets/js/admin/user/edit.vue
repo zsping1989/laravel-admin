@@ -19,9 +19,8 @@
                                                 <span v-for="error in props['error']['uname']">{{error}}</span>
                                          </span>
                                         <input type="text" v-model="props['row']['uname']" class="form-control"
-                                               disabled="props['row']['id']"
+                                               :disabled="props['row']['id']"
                                                placeholder="请输入用户名">
-
                                     </div>
                                     <div class="form-group" :class="{'has-error':props['error']['password']}">
                                         <label>密码</label>

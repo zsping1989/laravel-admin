@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Open;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Germey\Geetest\GeetestCaptcha;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use LaravelAdmin\Facades\Option;
 use Resource\Facades\Data;
@@ -24,6 +26,7 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
+    use GeetestCaptcha;
     /**
      * 验证登录字段
      *
@@ -73,14 +76,17 @@ class LoginController extends Controller
      */
     public function geetest()
     {
-        $user_id = "test";
-        $status = \Geetest::preProcess($user_id);
+        /*$user_id = "test";
+        $status = \Geetest::preProcess(['gt'=>$user_id]);
         session()->put('gtserver', $status);
         session()->put('user_id', $user_id);
         $data = \Geetest::getResponse();
+        $data['success'] = !$data['success'];*/
         $data['client_fail_alert'] = config('geetest.client_fail_alert', '验证失败!');
         $data['lang'] = config('geetest.lang', 'zh-cn');
-        $data['success'] = !$data['success'];
+        $data['product'] = 'float';
+        $data['http'] = 'http://';
+        $data['geetestUrl'] = '/open/geetest';
         return $data;
     }
 
@@ -93,18 +99,19 @@ class LoginController extends Controller
     protected function validateLogin(Request $request)
     {
         $uname = $this->loginUsername();
+        $request->offsetSet('geetest_challenge', $request->input('verify'));
         $this->validate($request, [
             $uname => 'required|exists:users,' . $uname . ',status,1',
             'password' => 'required',
-            'geetest_challenge' => 'required|geetest'
+            'verify' => 'required|geetest'
         ], [
             $uname . '.required' => '请填写用户名',
             $uname . '.exists' => '用户名或密码错误',
             'password.required' => '请填写密码',
-            'geetest_challenge.required' => ':attribute必填',
-            'geetest_challenge.geetest' => ':attribute验证失败'
+            'verify.required' => '验证码必填',
+            'verify.geetest' => '验证码验证失败'
         ], [
-            'geetest_challenge' => '验证码'
+            'verify' => '验证码'
         ]);
 
     }

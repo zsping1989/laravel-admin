@@ -17,7 +17,9 @@ class IndexController extends \App\Http\Controllers\Home\IndexController
      */
     public function index()
     {
-        return Response::returns([]);
+        return Response::returns([
+            'grades'=>$this->gradeRatio()
+        ]);
     }
 
 

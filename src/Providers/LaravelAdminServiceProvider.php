@@ -41,6 +41,13 @@ class LaravelAdminServiceProvider extends ServiceProvider
         //时间语言设置
         \Carbon\Carbon::setLocale(array_get(explode('-',config('app.locale')),0));
         Route::pattern('id', '[0-9]+'); //全局路由设置
+
+        //注册创建代码命令
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                'LaravelAdmin\Console\LaravelAdmimPublish',
+            ]);
+        }
     }
 
 

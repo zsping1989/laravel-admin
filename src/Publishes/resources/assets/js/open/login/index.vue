@@ -31,6 +31,7 @@
                     app_name:this.$store.state.global.app_name,
                     verify:{
                         type:'geetest',
+                        dataUrl:this.$store.state.geetest.geetestUrl,
                         data:this.$store.state.geetest
                     },
                     registerUrl:'', //注册链接

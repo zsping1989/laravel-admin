@@ -41,15 +41,14 @@
                 <input type="password" name="password" v-model="data['password']" class="form-control" placeholder="请输入密码">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
-            <div class="form-group has-feedback" :class="{'has-error':errors['geetest_challenge']}">
+            <div class="form-group has-feedback" :class="{'has-error':errors['verify']}">
                 <label class="control-label">
-                    <i class="fa fa-times-circle-o" v-show="errors['geetest_challenge']" ></i>
-                       <span v-for="value in errors['geetest_challenge']">
+                    <i class="fa fa-times-circle-o" v-show="errors['verify']" ></i>
+                       <span v-for="value in errors['verify']">
                        {{value}}
                     </span>
                 </label>
-                <div id="geetest-captcha"></div>
-                <p id="wait" v-show="loadGeetest">正在加载验证码...</p>
+                <geetest :url="config['verify']['dataUrl']" v-model="data['verify']" :data="config['verify']['data']"></geetest>
             </div>
             <div class="form-group has-feedback">
                 <div class="row">
@@ -61,7 +60,7 @@
                         </div>
                     </div>
                     <div class="col-xs-4">
-                        <button type="button" @click="login" class="btn btn-primary btn-block btn-flat">登录</button>
+                        <button type="button" @click="login" class="button-login btn btn-primary btn-block btn-flat">登录</button>
                     </div>
                 </div>
             </div>
@@ -88,8 +87,11 @@
 </template>
 
 <script>
-    import geetest from './gt';
+    import Geetest from './Geetest.vue';
     export default {
+        components: {
+            geetest:Geetest
+        },
         props: {
             //分页配置
             ftxConfig: {
@@ -117,7 +119,8 @@
                     app_name:'LaravelAdmin',
                     verify:{
                         type:'geetest',
-                        data:''
+                        dataUrl:'',
+                        data:{}
                     },
                     registerUrl:'', //注册链接
                     forgetUrl:'', //忘记密码链接
@@ -126,7 +129,8 @@
                 loadGeetest:true,
                 loading: false, //提交中
                 data:{
-                    password:''
+                    password:'',
+                    verify:false
                 },
                 errors:{}
             };
@@ -157,17 +161,16 @@
         methods: {
             login(){
                 var $this = this;
-                var validate = window.captchaObj.getValidate();
-                if (!validate) {
-                    $this.errors = {'geetest_challenge':['滑块验证失败']};
+                if (!this.data['verify']) {
+                    $this.errors = {'verify':['滑块验证失败']};
                     return false;
                 }
                 var post_data = {};
-                post_data[this.config.usernameKey] = this.data[this.config.usernameKey];
-                post_data[this.config.rememberKey] = this.data[this.config.rememberKey];
+                post_data[this.config.usernameKey] = this.data[this.config.usernameKey] || '';
+                post_data[this.config.rememberKey] = this.data[this.config.rememberKey] || '';
                 post_data['password'] = this.data['password'];
                 post_data['json'] = 1;
-                post_data['geetest_challenge'] = $("input[name='geetest_challenge']").val();
+                post_data['verify'] = $("input[name='geetest_challenge']").val();
                 post_data['geetest_validate'] = $("input[name='geetest_validate']").val();
                 post_data['geetest_seccode'] = $("input[name='geetest_seccode']").val();
                 post_data['remember'] = this.data['remember'] ? 1 : undefined;
@@ -176,12 +179,13 @@
                             if(res.data.redirect){
                                 window.location.href = res.data.redirect;
                             }
-                            captchaObj.refresh();
+                            $this.data['verify'] = false;
                         })
                         .catch(function(error){
                             var data = error.response.data;
                             var errors = {};
                             if(typeof data == "object"){
+                                data = data.errors;
                                 for(var i in data){
                                     errors[i] = [];
                                     if(typeof data[i]== "object"){
@@ -193,7 +197,7 @@
                                     }
                                 }
                                 $this.errors = errors;
-                                captchaObj.refresh();
+                                $this.data['verify'] = false;
                             }else {
                                 window.location.reload();
                             }
@@ -201,18 +205,7 @@
             }
         },
         created(){
-            var $this = this;
-            $(function(){
-                initGeetest(window.datas.geetest, function(captchaObj){
-                    window.captchaObj = captchaObj;
-                    captchaObj.appendTo("#geetest-captcha");
-                    captchaObj.onReady(function() {
-                        $this.loadGeetest = false;
-                    });
-                });
-                $('.el-icon-error1').attr('class','el-input__icon fa fa-user');
-                $('.el-icon-error2').attr('class','el-input__icon fa fa-lock');
-            });
+
         }
     }
 </script>

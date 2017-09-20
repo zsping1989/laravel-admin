@@ -40,7 +40,9 @@
         "post-install-cmd": [
             "php artisan vendor:publish --tag=geetest",
             "php artisan lang:publish zh-CN,zh-HK,th,tk",
-            "php artisan vendor:publish --tag=laravel-admin"
+            "php artisan vendor:publish --tag=resource",
+            "php artisan vendor:publish --tag=resource-example",
+            "php artisan vendor:publish --tag=laravel-admin --force"
         ]
     }
 }

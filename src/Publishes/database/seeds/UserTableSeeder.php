@@ -20,7 +20,7 @@ class UserTableSeeder extends Seeder
         factory(\App\User::class)->create([
             'uname'=>config('app.admin_user_name'),
             'name'=>str_replace('业务系统','',config('app.name')),
-            'password'=>bcrypt(config('app.admin_password')),
+            'password'=>bcrypt(strval(config('app.admin_password'))),
             'mobile_phone'=>13699411148,
             'qq'=>214986304,
             'email'=>'214986304@qq.com',

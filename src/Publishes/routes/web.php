@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/',function(){
     return redirect('/home/index');
 });
@@ -20,7 +19,9 @@ Route::group(['prefix'=>'open','namespace'=>'Open'],function(){
     Route::get('login', 'LoginController@showLoginForm')->name('login'); //登录页面
     Route::post('login', 'LoginController@login'); //执行登录
     Route::post('logout', 'LoginController@logout')->name('logout'); //退出登录
+    Route::get('geetest', 'LoginController@getGeetest'); //获取验证码
     Route::get('index', 'IndexController@index');
+
     //Route::get('php-info', 'IndexController@phpInfo');
 });
 
@@ -39,7 +40,7 @@ Route::group(['prefix'=>'home','namespace'=>'Home','middleware'=>['auth']],funct
 //后台路由
 Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware'=>['auth','admin']],function(){
     Route::get('index', 'IndexController@index'); //后台主页
-    //createRessorceRoute('area','AreaController');
+    createRessorceRoute('area','AreaController');
     createRessorceRoute('user','UserController');
     createRessorceRoute('role','RoleController');
     createRessorceRoute('log','LogController',['except'=>['edit','import']]);

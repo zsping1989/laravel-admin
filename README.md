@@ -12,4 +12,10 @@
 三. laravel/framework: 5.2.*
 
 **步骤**
-$ 1 composer require zsping1989/laravel-admin
+```
+$ composer require zsping1989/laravel-admin
+$ php artisan laravel-admin:publish
+$ 修改配置文件.env
+$ php artisan key:generate
+$ php artisan migrate --seed
+```

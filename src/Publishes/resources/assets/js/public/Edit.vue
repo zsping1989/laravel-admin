@@ -84,6 +84,7 @@
                     var data = error.response.data;
                     var errors = {};
                     if (typeof data == "object") {
+                        data = data.errors;
                         for (var i in data) {
                             errors[i] = [];
                             if (typeof data[i] == "object") {

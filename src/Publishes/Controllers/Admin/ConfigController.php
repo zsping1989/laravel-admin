@@ -25,7 +25,11 @@ class ConfigController extends Controller
      * @return  array
      */
     protected function getValidateRule(){
-        return [];
+        return [
+            'name' => 'required',
+            'key' => 'required',
+            'value' => 'required'
+        ];
     }
 
 
