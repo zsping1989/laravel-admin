@@ -9,7 +9,10 @@
 
 二. 安装好composer
 
-三. laravel/framework: 5.2.*
+三. 安装好cnpm
+
+四. laravel/framework: 5.5.*
+
 
 **步骤**
 ```
@@ -18,4 +21,6 @@ $ php artisan laravel-admin:publish
 $ 修改配置文件.env
 $ php artisan key:generate
 $ php artisan migrate --seed
+$ cnpm install
+$ cnpm run watch
 ```
