@@ -51,9 +51,7 @@ class RoleController extends Controller
      * @var array
      */
     public $editFields = [
-        'menus'=>['id'],
-        'teams'=>['id'],
-        'grades'=>['id']
+        'menus'=>['id']
     ];
 
     /**
@@ -62,7 +60,6 @@ class RoleController extends Controller
     public function edit($id = null)
     {
         $data['row'] = collect($this->getOne($id))->toArray();
-        $data['row']['grades'] = collect($data['row']['grades'])->pluck('id');
         //数据字段映射信息
         $data['maps'] = $this->bindModel()->getFieldsMap();
         //查询可选择的父级角色
@@ -81,16 +78,6 @@ class RoleController extends Controller
                 $item['checked'] = in_array($item['id'],$menus_id);
                 return $item;
             });
-        $checked_team_ids = collect($data['row']['teams'])->pluck('id')->toArray();
-        //团队管理
-        $data['maps']['teams'] = Team::orderBy('left_margin', 'asc')
-            ->get(['id','name','parent_id'])->map(function($item)use($checked_team_ids){
-                $item['checked'] = in_array($item['id'],$checked_team_ids);
-                return $item;
-            });
-        $data['maps']['grades'] = Grade::pluck('name','id');
-
-
         //增删改查URL地址
         $data['configUrl'] = $this->getConfigUrl('edit');
         //$data['configUrl']['indexUrl'] = '';
@@ -155,10 +142,6 @@ class RoleController extends Controller
                 Role::children($role)->get()->each(function($item) use($del_permissions){
                     $del_permissions AND $item->menus()->detach($del_permissions);
                 });
-                //角色同步管理团队
-                $role->teams()->sync(collect(array_get($data,'teams'))->pluck('id'));
-                //角色同步职级
-                $role->grades()->sync(array_get($data,'grades'));
             }
             //更新用户信息
             app('user.logic')->loginCacheInfo();

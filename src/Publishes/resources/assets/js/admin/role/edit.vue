@@ -57,30 +57,6 @@
                                             </span>
                                         <ztree v-model="props['row']['parent_id']"  :check-enable="false" :multiple="false" :id="'parent'" :chkbox-type='{ "Y" : "", "N" : "" }' :data="maps['optional_parents']"></ztree>
                                     </div>
-                                    <div class="form-group" :class="{'has-error':props['error']['grades']}">
-                                        <label>可选职级</label>
-                                             <span class="help-block">
-                                                <i class="fa" :class="props['error']['grades']?'fa-times-circle-o':'fa-info-circle'"></i>
-                                                <span v-show="!props['error']['grades']">提示信息</span>
-                                                <span v-for="error in props['error']['grades']">{{error}}</span>
-                                            </span>
-                                        <div class="row">
-                                            <span v-for="(item,index) in maps['grades']"  class="col-sm-6">
-                                                <input type="checkbox" v-model="props['row']['grades']" :value="index"> {{item}}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-sm-12">
-                                    <div class="form-group" :class="{'has-error':props['error']['teams']}">
-                                        <label>管理团队选择</label>
-                                             <span class="help-block">
-                                                <i class="fa" :class="props['error']['teams']?'fa-times-circle-o':'fa-info-circle'"></i>
-                                                <span v-show="!props['error']['teams']">提示信息</span>
-                                                <span v-for="error in props['error']['teams']">{{error}}</span>
-                                            </span>
-                                        <ztree v-model="props['row']['teams']" :id="'teams'" :chkbox-type='{ "Y" : "s", "N" : "s" }' :data="maps['teams']"></ztree>
-                                    </div>
                                 </div>
                             </template>
                         </edit>
