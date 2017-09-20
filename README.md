@@ -20,7 +20,10 @@ $ composer require zsping1989/laravel-admin
 $ php artisan laravel-admin:publish
 $ 修改配置文件.env
 $ php artisan key:generate
+$ composer dump
 $ php artisan migrate --seed
 $ cnpm install
 $ cnpm run watch
 ```
+
+安装好后在编辑器里将public和node_modules目录标记为排除,不然编辑器会卡死
