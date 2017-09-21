@@ -15,7 +15,7 @@ class NotificationTableSeeder extends Seeder
     {
         //初始化数据表
         DB::table('notifications')->truncate(); //用户表
-        \App\User::find(1)->notify(new \App\Notifications\Message(1,'安装提醒','恭喜你成功安装好系统','/admin/notification/edit'));
+        \App\User::find(1)->notify(new \App\Notifications\Message(1,'安装提醒','恭喜你成功安装好系统','/notification/edit'));
 
 
 
