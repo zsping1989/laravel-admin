@@ -832,14 +832,8 @@
 </template>
 
 <script>
-    import Tree from 'element-ui/lib/tree';
     export default {
         components: {
-            "el-tree":function (resolve, reject) {
-                setTimeout(function () {
-                    resolve(Tree);
-                }, 1500)
-            },
             "echart":(resolve) => require(['../public/Echart.vue'], resolve) //异步组件
         },
         data(){

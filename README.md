@@ -1,4 +1,4 @@
-# resource
+# LaravelAdmin
 ##用途
 1. 后台数据表基本的增删改查的实现
 
