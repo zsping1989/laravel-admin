@@ -14,7 +14,7 @@ laravel-admin
 Screenshots
 ------------
 
-![laravel-admin](http://a3.qpic.cn/psb?/V11BOt0S4MAKLC/*2yXcoVB6gN0.TXBVaruF3sBJdTsh4KyWII*cZPn*0g!/b/dPIAAAAAAAAA&bo=.gROAwAAAAACa*w!&rf=viewer_4)
+![laravel-admin](http://chuantu.biz/t6/57/1505986853x3062523156.gif)
 
 安装
 ------------
