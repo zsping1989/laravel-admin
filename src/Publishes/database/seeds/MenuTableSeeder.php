@@ -167,7 +167,7 @@ class MenuTableSeeder extends Seeder
             'description' => '普通用户',
             'parent_id'=>5,
             'is_page'=>1,
-            'status'=>2
+            'status'=>1
         ]);
         //ID:9-14
         $this->createRessorceMenu($userMenu,'普通用户');

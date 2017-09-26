@@ -32,7 +32,7 @@ class CreateLogsTable extends Migration
   PRIMARY KEY (`id`),
   KEY `logs_menu_id_index` (`menu_id`) USING BTREE,
   KEY `logs_user_id_index` (`user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='操作日志'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='操作日志\$softDeletes,timestamps@belongsTo:user|belongsTo:menu'");
     }
 
     /**

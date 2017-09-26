@@ -80,54 +80,6 @@ import MainModal from '../home/components/Modal.vue';
 import DataTable from '../public/DataTable.vue';
 import Edit from '../public/Edit.vue';
 
-/*//页面组件
-import UserIndex from './user/Index.vue';
-import UserEdit from './user/Edit.vue';
-import Index from './Index.vue';
-import RoleIndex from './role/Index.vue';
-import RoleEdit from './role/Edit.vue';
-import LogIndex from './log/Index.vue';
-import LogEdit from './log/Edit.vue';
-import MenuIndex from './menu/Index.vue';
-import MenuEdit from './menu/Edit.vue';
-import ConfigIndex from './config/Index.vue';
-import ConfigEdit from './config/Edit.vue';
-import YearIndex from './year/Index.vue';
-import YearEdit from './year/Edit.vue';
-import GradeIndex from './grade/Index.vue';
-import GradeEdit from './grade/Edit.vue';
-import BankIndex from './bank/Index.vue';
-import BankEdit from './bank/Edit.vue';
-import TeamIndex from './team/Index.vue';
-import TeamEdit from './team/Edit.vue';
-import FirmIndex from './firm/Index.vue';
-import FirmEdit from './firm/Edit.vue';
-import MemberIndex from './member/Index.vue';
-import MemberBill from './member/Bill.vue';
-import MemberEdit from './member/Edit.vue';
-import ProductIndex from './product/Index.vue';
-import ProductEdit from './product/Edit.vue';
-import ClassifyIndex from './classify/Index.vue';
-import ClassifyEdit from './classify/Edit.vue';
-import ToleadIndex from './tolead/Index.vue';
-import PersonageIndex from '../home/personage/Index.vue';
-import PersonagePassword from '../home/personage/Password.vue';
-import NotificationIndex from '../home/notification/Index.vue';
-import NotificationEdit from '../home/notification/Edit.vue';
-import AdminIndex from './admin/Index.vue';
-import AdminEdit from './admin/Edit.vue';
-import RateIndex from './rate/Index.vue';
-import RateEdit from './rate/Edit.vue';
-import ProductYearIndex from './product_year/Index.vue';
-import ProductYearEdit from './product_year/Edit.vue';
-import OrderIndex from './order/Index.vue';
-import OrderEdit from './order/Edit.vue';
-import OrderProductIndex from './order_product/Index.vue';
-import OrderProductEdit from './order_product/Edit.vue';
-import PayIndex from './pay/Index.vue';
-import PayEdit from './pay/Edit.vue';
-import BillIndex from './bill/Index.vue';
-import BillEdit from './bill/Edit.vue';*/
 
 Vue.component("data-table",DataTable);
 Vue.component("edit",Edit);
@@ -139,55 +91,6 @@ let components = {
     'main-sidebar':Sidebar,
     'main-alert':MainAlert, //弹窗
     'main-modal':MainModal
-
-   /* ,
-    'user-index':UserIndex,
-    'user-edit':UserEdit,
-    'index':Index,
-    'role-index':RoleIndex,
-    'role-edit':RoleEdit,
-    'log-index':LogIndex,
-    'log-edit':LogEdit,
-    'config-index':ConfigIndex,
-    'config-edit':ConfigEdit,
-    'year-index':YearIndex,
-    'year-edit':YearEdit,
-    'bank-index':BankIndex,
-    'bank-edit':BankEdit,
-    'grade-index':GradeIndex,
-    'grade-edit':GradeEdit,
-    'team-index':TeamIndex,
-    'team-edit':TeamEdit,
-    'classify-index':ClassifyIndex,
-    'classify-edit':ClassifyEdit,
-    'firm-index':FirmIndex,
-    'firm-edit':FirmEdit,
-    'member-index':MemberIndex,
-    'member-bill':MemberBill,
-    'member-edit': MemberEdit,
-    'product-index':ProductIndex,
-    'product-edit': ProductEdit,
-    'tolead-index':ToleadIndex,
-    'personage-index':PersonageIndex,
-    'personage-password':PersonagePassword,
-    'notification-index':NotificationIndex,
-    'notification-edit':NotificationEdit,
-    'menu-index':MenuIndex,
-    'menu-edit':MenuEdit,
-    'rate-index':RateIndex,
-    'rate-edit':RateEdit,
-    'product_year-index':ProductYearIndex,
-    'product_year-edit':ProductYearEdit,
-    'order-index':OrderIndex,
-    'order-edit':OrderEdit,
-    'order_product-index':OrderProductIndex,
-    'order_product-edit':OrderProductEdit,
-    'pay-index':PayIndex,
-    'pay-edit':PayEdit,
-    'bill-index':BillIndex,
-    'bill-edit':BillEdit,
-    'admin-index':AdminIndex,
-    'admin-edit':AdminEdit*/
 };
 
 

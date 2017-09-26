@@ -57,9 +57,21 @@ class Menu extends Model
         'right_margin'=>0
     ];
 
-    /* 菜单-角色 */
+    /**
+     * 菜单-角色
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function roles(){
        return $this->belongsToMany('App\Models\Role');
+    }
+
+
+    /**
+     * 菜单-操作日志
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function logs(){
+        return $this->hasMany('App\Models\Log');
     }
 
     /**

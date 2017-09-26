@@ -1,7 +1,7 @@
 <template>
     <select class="form-control" :disabled="disabled" :multiple="multiple" style="width: 100%;">
         <option :value="placeholderValue">请选择</option>
-        <option v-for="defaultOption in defaultOptions" :value="defaultOption['id']" :selected="selected(defaultOption['id'])">{{defaultOption['text']}}</option>
+        <option v-for="option in options" :value="option['id']" :selected="selected(option['id'])">{{option['text']}}</option>
     </select>
 </template>
 <script>
@@ -75,6 +75,33 @@
                 default: function () {
                     return null;
                 }
+            },
+            show:{
+                type:[Array],
+                default: function () {
+                    return ['name'];
+                }
+            }
+        },
+        computed: {
+            options(){
+                var options = this.defaultOptions;
+                var text, i, j,row;
+                for(i in options){
+                    row = options[i];
+                    text = '';
+                    if(typeof row['text']=='undefined'){
+                        for (j in this.show){
+                            if(j==0){
+                                text = array_get(row,this.show[j]);
+                            }else {
+                                text += array_get(row,this.show[j]) ? '（'+array_get(row,this.show[j])+'）':'';
+                            }
+                        }
+                        options[i]['text'] = text;
+                    }
+                }
+                return options;
             }
         },
         methods:{
@@ -104,6 +131,21 @@
                             //最后一页
                             processResults: function (data, params) {
                                 params.page = params.page || 1;
+                                var text, i, j,row;
+                                for(i in data.data){
+                                    row = data.data[i];
+                                    text = '';
+                                    if(typeof row['text']=='undefined'){
+                                        for (j in $this.show){
+                                            if(j==0){
+                                                text = array_get(row,$this.show[j]);
+                                            }else {
+                                                text += array_get(row,$this.show[j]) ? '（'+array_get(row,$this.show[j])+'）':'';
+                                            }
+                                        }
+                                        data.data[i]['text'] = text;
+                                    }
+                                }
                                 return {
                                     results: data.data,
                                     pagination: {

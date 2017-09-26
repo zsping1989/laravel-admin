@@ -29,7 +29,7 @@ class CreateConfigsTable extends Migration
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`),
   KEY `configs_key_index` (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置\$softDeletes,timestamps'");
     }
 
     /**

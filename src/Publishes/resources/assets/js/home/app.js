@@ -72,26 +72,6 @@ import MainModal from './components/Modal.vue';
 import DataTable from '../public/DataTable.vue';
 import Edit from '../public/Edit.vue';
 
-/*
-//页面组件
-import Index from './Index.vue';
-import PersonageIndex from './personage/Index.vue';
-import PersonagePassword from './personage/Password.vue';
-import NotificationIndex from './notification/index.vue';
-import NotificationEdit from './notification/Edit.vue';
-import Error404 from './error/404.vue';
-
-import OrderIndex from './order/Index.vue';
-import OrderEdit from './order/Edit.vue';
-import OrderProductIndex from './order_product/Index.vue';
-import OrderProductEdit from './order_product/Edit.vue';
-import PayIndex from './pay/Index.vue';
-import PayEdit from './pay/Edit.vue';
-import BillIndex from './bill/Index.vue';
-import BillEdit from './bill/Edit.vue';
-import MemberIndex from './member/Index.vue';
-import MemberEdit from './member/Edit.vue';
-import BillMonth from './bill/Month.vue';*/
 
 Vue.component("data-table",DataTable);
 Vue.component("edit",Edit);
@@ -101,24 +81,6 @@ let components = {
     'main-footer':Footer, //底部
     'main-alert':MainAlert, //弹窗
     'main-modal':MainModal
-/*    ,
-    'member-index':MemberIndex,
-    'member-edit': MemberEdit,
-    'order-index':OrderIndex,
-    'order-edit':OrderEdit,
-    'order_product-index':OrderProductIndex,
-    'order_product-edit':OrderProductEdit,
-    'pay-index':PayIndex,
-    'pay-edit':PayEdit,
-    'bill-index':BillIndex,
-    'bill-edit':BillEdit,
-    'bill-month':BillMonth,
-    'index':Index,
-    'error-404':Error404,
-    'notification-index':NotificationIndex,
-    'notification-edit':NotificationEdit,
-    'personage-index':PersonageIndex,
-    'personage-password':PersonagePassword*/
 };
 //页面组件异步渲染
 components[window.datas.global.page] = (resolve) => require(['./'+window.datas.global.page_path+'.vue'], resolve);

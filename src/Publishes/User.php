@@ -83,6 +83,14 @@ class User extends Authenticatable
     }
 
     /**
+     * 用户操作日志
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function logs(){
+         return $this->hasMany('App\Models\Log');
+    }
+
+    /**
      * Get the entity's notifications.
      */
     public function notifications()

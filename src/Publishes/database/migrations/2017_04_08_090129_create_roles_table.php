@@ -33,7 +33,7 @@ class CreateRolesTable extends Migration
   KEY `roles_parent_id_index` (`parent_id`),
   KEY `roles_left_margin_index` (`left_margin`),
   KEY `roles_right_margin_index` (`right_margin`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色\$softDeletes,timestamps,treeModel@belongsToMany:menus|belongsToMany:admins'");
     }
 
     /**

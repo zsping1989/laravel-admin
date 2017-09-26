@@ -24,7 +24,7 @@ class CreateMenuRoleTable extends Migration
   PRIMARY KEY (`role_id`,`menu_id`),
   KEY `menu_role_role_id_index` (`role_id`),
   KEY `menu_role_menu_id_index` (`menu_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='菜单-角色关联'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='菜单-角色关联\$noId'");
     }
 
     /**

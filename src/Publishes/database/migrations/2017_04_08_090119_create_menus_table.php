@@ -38,7 +38,7 @@ class CreateMenusTable extends Migration
   KEY `menus_parent_id_index` (`parent_id`),
   KEY `menus_left_margin_index` (`left_margin`),
   KEY `menus_right_margin_index` (`right_margin`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='菜单'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='菜单\$softDeletes,timestamps,treeModel,excludeTop@belongsToMany:roles|hasMany:logs'");
     }
 
     /**

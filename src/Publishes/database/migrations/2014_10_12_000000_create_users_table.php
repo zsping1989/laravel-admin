@@ -37,7 +37,7 @@ class CreateUsersTable extends Migration
   KEY `users_email_index` (`email`) USING BTREE,
   KEY `users_mobile_phone_index` (`mobile_phone`) USING BTREE,
   KEY `users_qq_index` (`qq`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户\$softDeletes,timestamps,notifiable@hasOne:admin|hasMany:logs'");
     }
 
     /**

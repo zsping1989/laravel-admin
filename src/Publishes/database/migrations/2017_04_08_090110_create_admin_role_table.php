@@ -24,7 +24,7 @@ class CreateAdminRoleTable extends Migration
   PRIMARY KEY (`admin_id`,`role_id`),
   KEY `admin_role_admin_id_index` (`admin_id`),
   KEY `admin_role_role_id_index` (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='后台用户-角色关联'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='后台用户-角色关联\$noId'");
     }
 
     /**

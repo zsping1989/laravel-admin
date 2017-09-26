@@ -26,7 +26,7 @@ class CreateAdminsTable extends Migration
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `admins_user_id_unique` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='后台用户'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='后台用户\$softDeletes,timestamps@belongsTo:user|belongsToMany:roles'");
     }
 
     /**
