@@ -1,3 +1,14 @@
+.input-checkbox{
+  padding-top: 7px;
+  padding-bottom: 6px;
+}
+.el-input__inner{
+  height: 36px;
+}
+
+.el-time-panel__content::after, .el-time-panel__content::before{
+  margin-top: -7px;
+}
 .small-box > .inner{
   height: 110px;
   a {
