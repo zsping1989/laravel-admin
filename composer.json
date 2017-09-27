@@ -13,7 +13,9 @@
         "germey/geetest": "^3.0",
         "zsping1989/ip-city": ">=0.0.2",
         "zsping1989/resource": ">=0.0.4",
-        "overtrue/laravel-lang": "~3.0"
+        "overtrue/laravel-lang": "~3.0",
+        "overtrue/laravel-ueditor": "^1.2",
+        "yangyifan/upload": "^0.2.1"
     },
     "autoload": {
         "psr-4": {

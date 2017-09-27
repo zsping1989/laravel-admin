@@ -38,6 +38,7 @@ class GlobalDataRepository implements GlobalDataContract{
                 return str_replace('-','_',$item);
             })->implode('-');
         $global['page_path'] = str_replace('-','/',$global['page']);
+        $global['config']['upload_route'] = config('ueditor.route.name');
         $route_key = md5(app('request')->getPathInfo()); //面包屑导航信息
         $navs = [];//Cache::get(config('cache-key.menu_navbar'),[]);
         $global['navs'] = array_get($navs,$route_key,function()use($navs,$route_key){

@@ -56,6 +56,11 @@ class LaravelAdmimPublish extends Command
             '--tag' => 'resource-example'
         ]);
 
+        //发布百度编辑器
+        Artisan::call('vendor:publish', [
+            '--provider' => 'Overtrue\LaravelUEditor\UEditorServiceProvider'
+        ]);
+
         //发布LaravelAdmin
         Artisan::call('vendor:publish', [
             '--tag' => 'laravel-admin',
