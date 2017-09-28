@@ -60,6 +60,7 @@ class LaravelAdmimPublish extends Command
         Artisan::call('vendor:publish', [
             '--provider' => 'Overtrue\LaravelUEditor\UEditorServiceProvider'
         ]);
+        Artisan::call('storage:link');
 
         //发布LaravelAdmin
         Artisan::call('vendor:publish', [
