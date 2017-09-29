@@ -7,8 +7,7 @@ laravel-admin
 
 `laravel-admin` 是一个可以快速帮你构建后台管理的工具，它提供的页面组件和表单元素等功能，能帮助你使用很少的代码就实现功能完善的后台管理功能。
 
-[Demo](#)
-[阅读文档](https://zsping1989.gitbooks.io/laravel-admin/)
+[Demo](www.zsping1989.com) || [阅读文档](help.zsping1989.com) 或者 [Demo](www.laraveladmin.cn) || [阅读文档](help.laraveladmin.cn)
 
 
 Screenshots
@@ -88,7 +87,8 @@ npm run production
 ![navicat建表](https://zsping1989.gitbooks.io/laravel-admin/content/assets/QQ图片20170926163747.png)
 
 ```sql
-CREATE TABLE `tests` (
+C
+REATE TABLE `tests` (
 `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
 `user_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID$select2',
 `name` varchar(255) NOT NULL DEFAULT '' COMMENT '名称',
@@ -121,7 +121,7 @@ PRIMARY KEY (`id`),
 KEY `tests_parent_id_index` (`parent_id`),
 KEY `tests_left_margin_index` (`left_margin`),
 KEY `tests_right_margin_index` (`right_margin`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='测试$softDeletes,timestamps,treeModel@belongsTo:user';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='测试$softDeletes,timestamps,treeModel@belongsTo:user';
 
 ```
 # 生成结果
