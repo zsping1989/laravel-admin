@@ -171,13 +171,13 @@
                                 <li class="user-body">
                                     <div class="row">
                                         <div class="col-xs-4 text-center">
-                                            <a href="/home/member/index">我的团队</a>
+                                            <a href="#">项目栏位</a>
                                         </div>
                                         <div class="col-xs-4 text-center">
-                                            <a href="/home/pay/index">我的台账</a>
+                                            <a href="#">项目栏位</a>
                                         </div>
                                         <div class="col-xs-4 text-center">
-                                            <a href="/home/bill/index">我的佣金</a>
+                                            <a href="#">项目栏位</a>
                                         </div>
                                     </div>
                                     <!-- /.row -->

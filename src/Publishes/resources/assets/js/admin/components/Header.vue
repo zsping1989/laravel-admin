@@ -162,13 +162,13 @@
                             <li class="user-body">
                                 <div class="row">
                                     <div class="col-xs-4 text-center">
-                                        <a href="/admin/member/index">代理人</a>
+                                        <a href="#">项目栏位</a>
                                     </div>
                                     <div class="col-xs-4 text-center">
-                                        <a href="/admin/pay/index">台账</a>
+                                        <a href="#">项目栏位</a>
                                     </div>
                                     <div class="col-xs-4 text-center">
-                                        <a href="/admin/bill/index">佣金</a>
+                                        <a href="#">项目栏位</a>
                                     </div>
                                 </div>
                                 <!-- /.row -->
