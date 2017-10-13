@@ -86,6 +86,9 @@
         computed: {
             options(){
                 var options = this.defaultOptions;
+                if(!options){
+                    return [];
+                }
                 var text, i, j,row;
                 for(i in options){
                     row = options[i];
