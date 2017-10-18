@@ -189,7 +189,7 @@
                     </li>
                     <!-- Control Sidebar Toggle Button -->
                     <li>
-                        <a data-toggle="control-sidebar" @click="controlSidebarToggle"><i class="fa fa-gears"></i></a>
+                        <a @click="controlSidebarToggle"><i class="fa fa-gears"></i></a>
                     </li>
                 </ul>
             </div>
