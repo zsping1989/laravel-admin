@@ -80,6 +80,26 @@ import MainModal from '../home/components/Modal.vue';
 import DataTable from '../public/DataTable.vue';
 import Edit from '../public/Edit.vue';
 
+//页面组件
+ import UserIndex from './user/index.vue';
+ import UserEdit from './user/edit.vue';
+ import Index from './index.vue';
+ import RoleIndex from './role/index.vue';
+ import RoleEdit from './role/edit.vue';
+ import LogIndex from './log/index.vue';
+ import LogEdit from './log/edit.vue';
+ import MenuIndex from './menu/index.vue';
+ import MenuEdit from './menu/edit.vue';
+ import ConfigIndex from './config/index.vue';
+ import ConfigEdit from './config/edit.vue';
+ import ToleadIndex from './tolead/index.vue';
+ import PersonageIndex from '../home/personage/index.vue';
+ import PersonagePassword from '../home/personage/password.vue';
+ import NotificationIndex from '../home/notification/index.vue';
+ import NotificationEdit from '../home/notification/edit.vue';
+ import AdminIndex from './admin/index.vue';
+ import AdminEdit from './admin/edit.vue';
+
 
 Vue.component("data-table",DataTable);
 Vue.component("edit",Edit);
@@ -91,12 +111,32 @@ let components = {
     'main-sidebar':Sidebar,
     'main-alert':MainAlert, //弹窗
     'main-modal':MainModal
+
+     ,
+     'user-index':UserIndex,
+     'user-edit':UserEdit,
+     'index':Index,
+     'role-index':RoleIndex,
+     'role-edit':RoleEdit,
+     'log-index':LogIndex,
+     'log-edit':LogEdit,
+     'config-index':ConfigIndex,
+     'config-edit':ConfigEdit,
+     'tolead-index':ToleadIndex,
+     'personage-index':PersonageIndex,
+     'personage-password':PersonagePassword,
+     'notification-index':NotificationIndex,
+     'notification-edit':NotificationEdit,
+     'menu-index':MenuIndex,
+     'menu-edit':MenuEdit,
+     'admin-index':AdminIndex,
+     'admin-edit':AdminEdit
 };
 
 
 
 //页面组件异步渲染
-components[window.datas.global.page] = (resolve) => require(['./'+window.datas.global.page_path+'.vue'], resolve);
+//components[window.datas.global.page] = (resolve) => require(['./'+window.datas.global.page_path+'.vue'], resolve);
 const app = new Vue({
     el: '#app',
     store,

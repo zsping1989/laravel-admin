@@ -159,10 +159,6 @@ class RoleController extends Controller
                 return ['role_id'=>$item['id'],'menu_id'=>$value];
             })->toArray());
         });
-        //角色同步管理团队
-        $res->teams()->sync(collect(array_get($data,'teams'))->pluck('id'));
-        $res->grades()->sync(collect(array_get($data,'grades'))->filter()->toArray());
-
         //更新用户信息
         app('user.logic')->loginCacheInfo();
         return Response::returns(['alert' => alert(['message' => '新增成功!'])]);

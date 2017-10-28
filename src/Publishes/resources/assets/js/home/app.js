@@ -72,6 +72,14 @@ import MainModal from './components/Modal.vue';
 import DataTable from '../public/DataTable.vue';
 import Edit from '../public/Edit.vue';
 
+//页面组件
+ import Index from './index.vue';
+ import PersonageIndex from './personage/index.vue';
+ import PersonagePassword from './personage/password.vue';
+ import NotificationIndex from './notification/index.vue';
+ import NotificationEdit from './notification/edit.vue';
+ import Error404 from './error/404.vue';
+
 
 Vue.component("data-table",DataTable);
 Vue.component("edit",Edit);
@@ -81,9 +89,17 @@ let components = {
     'main-footer':Footer, //底部
     'main-alert':MainAlert, //弹窗
     'main-modal':MainModal
+
+     ,
+     'index':Index,
+     'error-404':Error404,
+     'notification-index':NotificationIndex,
+     'notification-edit':NotificationEdit,
+     'personage-index':PersonageIndex,
+     'personage-password':PersonagePassword
 };
 //页面组件异步渲染
-components[window.datas.global.page] = (resolve) => require(['./'+window.datas.global.page_path+'.vue'], resolve);
+//components[window.datas.global.page] = (resolve) => require(['./'+window.datas.global.page_path+'.vue'], resolve);
 
 const app = new Vue({
     el: '#app',
