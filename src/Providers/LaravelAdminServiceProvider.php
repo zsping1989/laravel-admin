@@ -8,9 +8,18 @@ use Illuminate\Support\ServiceProvider;
 use LaravelAdmin\Logics\UserLogicService;
 use LaravelAdmin\Logics\MenuLogicService;
 use LaravelAdmin\Services\OptionRepository;
+use LaravelAdmin\Services\SMSService;
 
 class LaravelAdminServiceProvider extends ServiceProvider
 {
+
+    /**
+     * 指定是否延缓提供者加载。
+     *
+     * @var bool
+     */
+    //protected $defer = true;
+
     /**
      * Perform post-registration booting of services.
      *
@@ -65,6 +74,20 @@ class LaravelAdminServiceProvider extends ServiceProvider
         $this->app->singleton('user.logic', UserLogicService::class);
         //菜单逻辑
         $this->app->singleton('menu.logic', MenuLogicService::class);
+        //短信发送
+        $this->app->singleton('sms' , function($app){
+           return new SMSService();
+        });
 
+    }
+
+    /**
+     * 取得提供者所提供的服务。
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return ['sms','menu.logic','user.logic','option'];
     }
 }

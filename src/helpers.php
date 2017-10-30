@@ -136,6 +136,21 @@ if (! function_exists('menv')) {
     }
 }
 
+if (! function_exists('num_random')) {
+    /**
+     *
+     */
+    function num_random($length = 4){
+        $res = rand(0,pow(10,$length)-1);
+        $length_diff = $length-strlen($res);
+        for($i=0;$i<$length_diff;$i++){
+            $res = '0'.$res;
+        }
+        return $res;
+    }
+
+}
+
 
 
 
