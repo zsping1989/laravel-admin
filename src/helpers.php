@@ -138,7 +138,9 @@ if (! function_exists('menv')) {
 
 if (! function_exists('num_random')) {
     /**
-     *
+     * 数字随机数
+     * @param int $length 长度
+     * @return int|string 固定长度的字符串
      */
     function num_random($length = 4){
         $res = rand(0,pow(10,$length)-1);
