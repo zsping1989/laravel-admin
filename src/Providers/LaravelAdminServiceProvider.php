@@ -3,6 +3,7 @@
 namespace LaravelAdmin\Providers;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
@@ -63,6 +64,7 @@ class LaravelAdminServiceProvider extends ServiceProvider
             if(!$value) return true;
             //获取短信验证码
             $sms_codes = session()->get(config('session.sms.code_key'),[]);
+            $value = $value.'|'.Request::get(array_get($parameters,0,''),'');
             //认证成功后直接清除前面的短信码
             if(in_array($value,array_get($sms_codes,'values',[]))){
                 session()->forget(config('session.sms.code_key'));
