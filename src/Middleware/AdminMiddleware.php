@@ -14,6 +14,11 @@ use LaravelAdmin\Facades\MenuLogic;
 
 class AdminMiddleware{
     /**
+     * 操作日志ID
+     * @var
+     */
+    protected $log_id=0;
+    /**
      * 脚本运行时调用
      *
      * Handle an incoming request.
@@ -25,6 +30,22 @@ class AdminMiddleware{
 
     public function handle($request, Closure $next)
     {
+        //记录用户操作日志
+        if(!in_array(Route::getCurrentRoute()->getCompiled()->getStaticPrefix(),
+            ['/admin/log/edit','/admin/log/index','/admin/log/list','/admin/log/export'])){ //排除无需日志记录
+            $log = Log::create([
+                'menu_id'=>array_get(MenuLogic::getNowMenu(),'id',0),
+                'user_id'=>array_get(Auth::user(),'id'),
+                'location'=>collect(app('ip2city')->ip2addr(app('request')->getClientIp()))
+                    ->unique()
+                    ->filter()
+                    ->implode(','),
+                'ip'=>app('request')->getClientIp() ,
+                'parameters'=>json_encode(Request::all(),JSON_UNESCAPED_UNICODE),
+                'return'=>''
+            ]);
+            $this->log_id = $log['id'];
+        }
         //不是管理员,跳转到前台首页
         if(!app('user.logic')->getUserInfo('admin')){
             if(canRedirect() || app('request')->has('define')){
@@ -72,20 +93,9 @@ class AdminMiddleware{
      */
     public function terminate($request, $response)
     {
-        //结果成功返回到客户端后执行,记录用户操作日志
-        if(!in_array(Route::getCurrentRoute()->getCompiled()->getStaticPrefix(),
-            ['/admin/log/edit','/admin/log/index','/admin/log/list','/admin/log/export'])){ //排除无需日志记录
-            Log::create([
-                'menu_id'=>array_get(MenuLogic::getNowMenu(),'id',0),
-                'user_id'=>array_get(Auth::user(),'id'),
-                'location'=>collect(app('ip2city')->ip2addr(app('request')->getClientIp()))
-                    ->unique()->filter()->implode(','),
-                'ip'=>app('request')->getClientIp() ,
-                'parameters'=>json_encode(Request::all(),JSON_UNESCAPED_UNICODE),
-                'return'=>str_limit(json_encode(Data::all(),JSON_UNESCAPED_UNICODE),60000) //防止数据过长
-            ]);
+        if($this->log_id){
+            //写入返回数据
+            Log::where('id',$this->log_id)->update(['return'=>str_limit(json_encode(Data::all(),JSON_UNESCAPED_UNICODE),60000)]);
         }
-
-
     }
 }
