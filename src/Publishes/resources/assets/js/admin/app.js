@@ -99,7 +99,8 @@ import Edit from '../public/Edit.vue';
  import NotificationEdit from '../home/notification/edit.vue';
  import AdminIndex from './admin/index.vue';
  import AdminEdit from './admin/edit.vue';
-
+import AreaIndex from './area/index.vue';
+import AreaEdit from './area/edit.vue';
 
 Vue.component("data-table",DataTable);
 Vue.component("edit",Edit);
@@ -130,7 +131,9 @@ let components = {
      'menu-index':MenuIndex,
      'menu-edit':MenuEdit,
      'admin-index':AdminIndex,
-     'admin-edit':AdminEdit
+     'admin-edit':AdminEdit,
+    'area-edit':AreaEdit,
+    'area-index':AreaIndex
 };
 
 
