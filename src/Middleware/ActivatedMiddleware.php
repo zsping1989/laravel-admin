@@ -4,6 +4,7 @@ namespace LaravelAdmin\Middleware;
 
 use App\Models\Log;
 use App\Models\Menu;
+use App\User;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,8 +22,8 @@ class ActivatedMiddleware{
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
-        if($user['status']==0){
-            dd('请先通过用户注册的邮箱激活');
+        if(User::where('id',$user['id'])->value('status')==0){
+            dd('请先通过用户注册的邮箱激活!');
         }
         $response = $next($request);
         //后置操作

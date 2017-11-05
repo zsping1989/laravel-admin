@@ -43,7 +43,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest')->except('activateByEmail');
     }
 
     /**
@@ -216,7 +216,7 @@ class RegisterController extends Controller
         $request->offsetSet('geetest_challenge', $request->input('verify'));
         $this->validator($request->all())->validate();
         //最后验证短信码
-        if ($request->get('model') == 'email') {
+        if ($request->get('model') != 'email') {
             Validator::make($request->all(), [
                 'mobile_phone_code' => 'required|sms_code:mobile_phone' //短信验证码
             ], [
