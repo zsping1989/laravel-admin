@@ -226,10 +226,11 @@ class RegisterController extends Controller
             ])->validate();
         }
         event(new Registered($user = $this->create($request->all())));
-
-        $this->guard()->login($user);
-        //用户数据记录
-        app('user.logic')->loginCacheInfo();
+        if ($request->get('model') != 'email') {
+            $this->guard()->login($user);
+            //用户数据记录
+            app('user.logic')->loginCacheInfo();
+        }
         return $this->registered($request, $user)
             ?: orRedirect($this->redirectPath());
     }
@@ -266,6 +267,9 @@ class RegisterController extends Controller
             abort(404);
         }
         $user->update(['status' => 1]);
+        $this->guard()->login($user);
+        //用户数据记录
+        app('user.logic')->loginCacheInfo();
         return redirect(route('login'));
     }
 }
