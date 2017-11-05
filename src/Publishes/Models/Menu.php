@@ -96,4 +96,20 @@ class Menu extends Model
         $this->attributes['method'] = multipleToNum($value);
     }
 
+    /**
+     * 接口参数
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function params(){
+        return $this->hasMany('App\Models\Param');
+    }
+
+    /**
+     * 接口响应说明
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function responses(){
+        return $this->hasMany('App\Models\Response');
+    }
+
 }
