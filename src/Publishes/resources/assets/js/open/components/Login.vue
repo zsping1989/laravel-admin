@@ -65,10 +65,10 @@
                 </div>
             </div>
         </form>
-        <div class="social-auth-links text-center" v-if="config['otherLogin'].length">
+        <div class="social-auth-links text-center other-login" v-if="config['otherLogin'].length && !config['other']">
             <p>---------------- 其它方式登录 ----------------</p>
             <div class="row">
-                <div class="col-xs-2" v-for="item in config['otherLogin']">
+                <div :class="'col-xs-'+other_col" v-for="item in config['otherLogin']">
                     <a :href="item['url']">
                         <div class="img-circle icon login-icon" :class="item['class']">
                             <i class="fa" :class="'fa-'+item['type']"></i>
@@ -116,6 +116,7 @@
                     rememberKey:'remember',
                     //三方登录配置
                     otherLogin: [],
+                    other:'',
                     app_name:'LaravelAdmin',
                     verify:{
                         type:'geetest',
@@ -156,6 +157,11 @@
                     }
                 }
                 return config;
+            },
+            other_col(){
+                var count = this.config['otherLogin'].length;
+                var other_col = Math.ceil(12/count);
+                return other_col<2?2:other_col;
             }
         },
         methods: {
@@ -170,10 +176,12 @@
                 post_data[this.config.rememberKey] = this.data[this.config.rememberKey] || '';
                 post_data['password'] = this.data['password'];
                 post_data['json'] = 1;
-                post_data['verify'] = $("input[name='geetest_challenge']").val();
-                post_data['geetest_validate'] = $("input[name='geetest_validate']").val();
-                post_data['geetest_seccode'] = $("input[name='geetest_seccode']").val();
+                post_data['verify'] = $(this.$el).find("input[name='geetest_challenge']").val();
+                post_data['geetest_validate'] = $(this.$el).find("input[name='geetest_validate']").val();
+                post_data['geetest_seccode'] = $(this.$el).find("input[name='geetest_seccode']").val();
                 post_data['remember'] = this.data['remember'] ? 1 : undefined;
+                post_data['other'] = $this.config.other;
+                $this.data['verify'] = false;
                 axios.post($this.config.dataUrl,post_data)
                         .then(function(res){
                             if(res.data.redirect){
@@ -182,25 +190,8 @@
                             $this.data['verify'] = false;
                         })
                         .catch(function(error){
-                            var data = error.response.data;
-                            var errors = {};
-                            if(typeof data == "object"){
-                                data = data.errors;
-                                for(var i in data){
-                                    errors[i] = [];
-                                    if(typeof data[i]== "object"){
-                                        for(var j in data[i]){
-                                            errors[i][errors[i].length]= data[i][j].replace(i,'').replace(i.replace('_',' '),'');
-                                        }
-                                    }else {
-                                        errors[i][errors[i].length]=data[i].replace(i,'').replace(i.replace('_',' '),'');
-                                    }
-                                }
-                                $this.errors = errors;
-                                $this.data['verify'] = false;
-                            }else {
-                                window.location.reload();
-                            }
+                            catchError(error);
+                            $this.data['verify'] = false;
                         });
             }
         },

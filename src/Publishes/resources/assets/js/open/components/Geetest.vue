@@ -52,7 +52,11 @@
             //重置数据还原
             value(value,oldValue){
                 if(value==false){
-                   this.captchaObj.reset();
+                    if(typeof this.captchaObj.refresh!='undefined'){
+                        this.captchaObj.refresh();
+                    }else {
+                        this.captchaObj.reset();
+                    }
                 }
             }
         },

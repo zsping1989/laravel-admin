@@ -99,6 +99,13 @@ class User extends Authenticatable
             ->orderBy('created_at', 'desc');
     }
 
+    /**
+     * 三方登录用户
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ousers(){
+        return $this->hasMany('App\Models\Ouser');
+    }
 
 
 

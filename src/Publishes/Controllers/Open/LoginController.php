@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Open;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ouser;
 use App\Models\User;
 use Germey\Geetest\GeetestCaptcha;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use Laravel\Socialite\Facades\Socialite;
 use LaravelAdmin\Facades\Option;
 use Resource\Facades\Data;
 
@@ -44,6 +46,13 @@ class LoginController extends Controller
     protected $redirectAfterLogout = '/open/login';
     protected $redirectToHome = '/home/index';
 
+    //三方登录配置
+    protected $otherLogin=[
+        ['type'=>'qq','url'=>'/open/other-login/qq','class'=>'hover-primary'],
+        ['type'=>'wechat','url'=>'/open/other-login/weixin','class'=>'hover-warning'],
+        ['type'=>'weibo','url'=>'/open/other-login/weibo','class'=>'hover-danger']
+    ];
+
 
     /**
      * Create a new controller instance.
@@ -52,7 +61,45 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'logout']);
+        $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * 三方登录
+     * @return mixed
+     */
+    public function otherLogin($type){
+        return Socialite::with($type)->redirect();
+    }
+
+    /**
+     * 三方登录后回调
+     * @return mixed
+     */
+    public function otherLoginCallback(Request $request,$type){
+        $ouser = collect(Socialite::driver($type)->user());
+        //三方登录类型
+        $ouser_type = Ouser::getFieldsMap('type')->flip()->get($type,0);
+        //查询三方账号是否已绑定用户
+        $user = User::whereHas('ousers',function($q)use($ouser_type,$ouser){
+            $q->where('type',$ouser_type)->where('open_id',array_get($ouser,'id'));
+        })->first();
+        if($user){ //直接登录
+            $this->guard()->login($user);
+            return $this->sendLoginResponse($request);
+        }else{ //没有账号,保存三方信息
+            Ouser::firstOrCreate([
+                'type'=>$ouser_type,
+                'open_id'=>array_get($ouser,'id')
+            ],[
+                'user_id'=>0,
+                'type'=>$ouser_type,
+                'open_id'=>array_get($ouser,'id'),
+                'data'=>array_get($ouser,'user')
+            ]);
+            session()->put(config('session.other_login.key'),$ouser_type.'|'.array_get($ouser,'id'));
+            return orRedirect(route('login',['other'=>md5($ouser_type.'|'.array_get($ouser,'id'))]));
+        }
     }
 
 
@@ -66,7 +113,9 @@ class LoginController extends Controller
         $data['app_name'] = config('app.name');
         Data::set('global',$data);
         return Response::returns([
-            'geetest' => $this->geetest()
+            'geetest' => $this->geetest(),
+            'other'=>\Illuminate\Support\Facades\Request::get('other',''), //三方信息数据
+            'other_login'=>$this->otherLogin
         ]);
     }
 
@@ -187,7 +236,7 @@ class LoginController extends Controller
             //匹配是否为手机号码登录
         } elseif (str_contains($this->username, 'mobile_phone') && $validator->make(
                 ['username' => $request->input('username')],
-                ['username' => 'mobilePhone'])->passes()
+                ['username' => 'mobile_Phone'])->passes()
         ) {
             $this->authField = 'mobile_phone';
             //其它为用户名登录
@@ -211,7 +260,7 @@ class LoginController extends Controller
             'name' => 'required|max:255',
             'uname' => 'required|max:255|unique:users',
             'email' => 'required|email|max:255|unique:users',
-            'mobile_phone' => 'sometimes|mobilePhone|unique:users',
+            'mobile_phone' => 'sometimes|mobile_phone|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
     }
@@ -247,10 +296,21 @@ class LoginController extends Controller
         $this->clearLoginAttempts($request);
         //用户数据记录
         app('user.logic')->loginCacheInfo();
+        //如果是登录并绑定
+        $other = \Illuminate\Support\Facades\Request::get('other');
+        $session_other = session()->get(config('session.other_login.key'));
+        if($other && md5($session_other)==$other){
+            $session_others = explode('|',$session_other);
+            //查询三方数据
+            Ouser::where('type',array_get($session_others,0))
+                ->where('open_id',array_get($session_others,1))
+                ->where('user_id',0)
+                ->update(['user_id'=>array_get(Auth::user(),'id')]);
+        }
         $redirect = app('user.logic')->getUserInfo('admin') ? $this->redirectPath() : $this->redirectToHome;
         if (canRedirect()) {
             return $this->authenticated($request, $this->guard()->user())
-                ?: redirect()->intended($redirect);
+                ?: redirect($redirect,302);
         }
         return orRedirect($redirect, 200);
     }

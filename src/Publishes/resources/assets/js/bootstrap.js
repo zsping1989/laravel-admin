@@ -81,6 +81,31 @@ window.isNull = function (arg1)
  * allows your team to easily build robust real-time web applications.
  */
 
+window.catchError = function(error){
+    var data = error.response.data;
+    var errors = {};
+    if(typeof data == "object"){
+        data = data.errors;
+        if(typeof data=='undefined'){
+            window.location.reload();
+        }
+        for(var i in data){
+            errors[i] = [];
+            if(typeof data[i]== "object"){
+                for(var j in data[i]){
+                    errors[i][errors[i].length]= data[i][j].replace(i,'').replace(i.replace('_',' '),'');
+                }
+            }else {
+                errors[i][errors[i].length]=data[i].replace(i,'').replace(i.replace('_',' '),'');
+            }
+        }
+        return errors;
+    }else {
+        window.location.reload();
+    }
+    return errors;
+};
+
 // import Echo from 'laravel-echo'
 
 // window.Pusher = require('pusher-js');

@@ -19,12 +19,10 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             $main = app('user.logic')->getUser();
-            if($main->admin){
+            if($main->admin){ //后台管理员
                 return redirect('/admin/index');
-            }elseif($main->member){
-                return redirect('/home/index');
             }else{
-                return redirect('/open/index');
+                return redirect('/home/index');
             }
         }
 

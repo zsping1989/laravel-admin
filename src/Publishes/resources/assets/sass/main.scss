@@ -1,3 +1,25 @@
+.other-login{
+  div a{
+    margin-top: 10px;
+  }
+  p{
+    margin-bottom: 0px;
+  }
+}
+.login-page .control-label{
+  margin-bottom: 0px;
+  span{
+    color: #a4aaae;
+    font-weight: normal;
+  }
+}
+.login-page .form-group.has-error label.control-label span{
+  color: #dd4b39;
+}
+.other-login a,.other-login a .img-circle{
+  display: block;
+  margin: 0 auto;
+}
 .main-control-sidebar > .control-sidebar.control-sidebar-open{
   right: -17px;
 }
