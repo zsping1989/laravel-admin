@@ -15,7 +15,9 @@
     require('select2/dist/js/i18n/zh-CN.js');
     export default {
         data(){
-            return {};
+            return {
+                changeing:false
+            };
         },
         props:{
             //绑定值
@@ -181,11 +183,28 @@
                 }
             }
         },
+        watch:{
+            value(value,oldValue){
+                if(!this.changeing){
+                    $(this.$el).val(value).trigger("change");
+                }
+                this.changeing = false;
+            },
+            disabled(value,oldValue){
+                if(value){
+                    $(this.$el).prop("disabled", true);
+                }else {
+                    $(this.$el).prop("disabled", false);
+                }
+
+            }
+        },
         mounted() {
             var $this = this;
             this.initSelect2();
             $(this.$el).on('change',function(){
                 var value = $(this).val();
+                $this.changeing = true;
                 $this.$emit('input', value); //修改值
                 $this.$emit('change',value); //修改值
             });

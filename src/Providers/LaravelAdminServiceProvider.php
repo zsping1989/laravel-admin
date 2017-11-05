@@ -36,6 +36,7 @@ class LaravelAdminServiceProvider extends ServiceProvider
             __DIR__.'/../Publishes/Console' => app_path('Console'), //定时任务
             __DIR__.'/../Publishes/Jobs' => app_path('Jobs'), //队列
             __DIR__.'/../Publishes/Mail' => app_path('Mail'), //邮件
+            __DIR__.'/../Publishes/Providers' => app_path('Providers'),
             __DIR__.'/../Publishes/Controllers' => app_path('Http/Controllers'), //控制器
             __DIR__.'/../Publishes/database' => database_path(), //表迁徙及填充文件
             __DIR__.'/../Publishes/Middleware' => app_path('Http/Middleware'), //中间件注册
