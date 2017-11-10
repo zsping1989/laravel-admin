@@ -27,7 +27,7 @@ class CreateJobsTable extends Migration
   `available_at` int(10) unsigned NOT NULL,
   `created_at` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `jobs_queue_index` (`queue`(250))
+  KEY `jobs_queue_index` (`queue`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
     }
 

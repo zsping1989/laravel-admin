@@ -190,7 +190,7 @@
                             $this.data['verify'] = false;
                         })
                         .catch(function(error){
-                            catchError(error);
+                            $this.errors = catchError(error);
                             $this.data['verify'] = false;
                         });
             }
