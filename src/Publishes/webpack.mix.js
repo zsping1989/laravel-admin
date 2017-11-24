@@ -10,6 +10,13 @@ const { mix } = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+mix.webpackConfig({
+    resolve: {
+        alias: {
+            "public": path.resolve(__dirname, 'resources/assets/js/public/')
+        }
+    }
+});
 
 mix.js('resources/assets/js/admin/app.js', 'public/js/admin') .version();
 mix.js('resources/assets/js/home/app.js', 'public/js/home') .version();
