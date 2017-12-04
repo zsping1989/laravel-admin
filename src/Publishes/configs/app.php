@@ -17,6 +17,10 @@ return [
     'logo'=>env('APP_LOGO', '/css/img/user2-160x160.jpg'), //LOGO
     'admin_user_name'=>env('ADMIN_USER_NAME', 'admin'), //系统账号用户名
     'admin_password'=>env('ADMIN_PASSWORD', '123456'), //系统账号密码
+    'verify'=>[
+        'type'=>env('APP_VERIFY_TYPE','geetest'), //登录注册验证类型
+        'login_pass_num'=>env('APP_VERIFY_LOGIN_PASS_NUM','1')//登录验证允许次数
+    ],
 
     /*
     |--------------------------------------------------------------------------

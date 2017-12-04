@@ -63,21 +63,21 @@ class RegisterController extends Controller
         //电子邮箱
         if (array_get($data, 'model') == 'email') {
             $validator['email'] = 'required|string|email|max:255|unique:users,email'; //电子邮箱
-            $validator['verify'] = 'required|geetest'; //极验验证
+            $validator['verify'] = 'required|'.config('app.verify.type'); //极验验证
         } else {
             $validator['mobile_phone'] = 'required|mobile_phone|unique:users,mobile_phone'; //手机号
-            //$validator['mobile_phone_code'] = 'required|sms_code:mobile_phone'; //短信验证码
         }
         return Validator::make($data, $validator, [
             'uname.unique' => '用户名已存在',
             'email.unique' => '电子邮箱已被使用了',
             'mobile_phone.mobile_phone' => '请正确填写手机号',
-            //'mobile_phone_code.sms_code'=>'短信验证码验证失败'
+            'verify.geetest' => '验证码验证失败',
+            'verify.captcha' => '验证码验证失败'
         ], [
             'uname' => '用户名',
             'email' => '电子邮箱',
             'mobile_phone' => '手机号',
-            //'mobile_phone_code'=>'短信验证码'
+            'verify'=>'验证码'
         ]);
     }
 
@@ -85,10 +85,11 @@ class RegisterController extends Controller
     {
         $this->validate($request, [
             'mobile_phone' => 'required|mobile_phone', //手机号
-            'verify' => 'required|geetest' //极验验证
+            'verify' => 'required|'.config('app.verify.type') //验证码
         ], [
             'verify.required' => '验证码必填',
-            'verify.geetest' => '验证码验证失败'
+            'verify.geetest' => '验证码验证失败',
+            'verify.captcha' => '验证码验证失败'
         ], [
             'verify' => '验证码'
         ]);
@@ -151,7 +152,7 @@ class RegisterController extends Controller
         //验证码及上传验证码发送时间
         $codes = session()->get(config('session.sms.code_key'), []);
         $now = time();
-        if (count(array_get($codes, 'values')) >= config('session.sms.refuse_num', 1) && $codes['time'] + config('session.sms.refuse_time') > $now) {
+        if (count(array_get($codes, 'values')) >= config('session.sms.refuse_num', 1) && array_get($codes,'time') + config('session.sms.refuse_time') > $now) {
             return Response::returns([
                 'message' => '拒绝发送短信',
                 'errors' => [
@@ -160,7 +161,7 @@ class RegisterController extends Controller
             ], 422);
         }
         //正在发送短信验证码
-        if ($codes && $codes['time'] + config('session.sms.forbidden') > $now) {
+        if ($codes && array_get($codes,'time') + config('session.sms.forbidden') > $now) {
             return Response::returns([
                 'title' => '短信正在发送...',
                 'countdown' => $codes['time'] + config('session.sms.forbidden') - $now
@@ -170,10 +171,11 @@ class RegisterController extends Controller
         //验证数据
         $this->validate($request, [
             'mobile_phone' => 'required|mobile_phone|unique:users,mobile_phone', //手机号
-            'verify' => 'required|geetest' //极验验证
+            'verify' => 'required|'.config('app.verify.type') //验证验证码
         ], [
             'verify.required' => '验证码必填',
             'verify.geetest' => '验证码验证失败',
+            'verify.captcha' => '验证码验证失败',
             'mobile_phone.mobile_phone' => '请正确填写手机号',
             'mobile_phone.unique' => '该手机号已经注册过了'
         ], [
@@ -187,6 +189,7 @@ class RegisterController extends Controller
 
         $codes['time'] = $now;
         $codes['values'][] = $code . '|' . $mobile_phone;
+        $codes['verify_num'] = 0; //验证次数
         session()->put(config('session.sms.code_key'), $codes);
 
         //短信内容
@@ -205,6 +208,26 @@ class RegisterController extends Controller
     }
 
     /**
+     * 注册短信验证
+     */
+    protected function registerValidator(){
+        Validator::extend('smsCode', function($attribute, $value, $parameters){
+            if(!$value) return true;
+            //获取短信验证码
+            $sms_codes = session()->get(config('session.sms.code_key'),[]);
+            $value = $value.'|'.\Illuminate\Support\Facades\Request::get(array_get($parameters,0,''),'');
+            //认证成功后直接清除前面的短信码
+            if(in_array($value,array_get($sms_codes,'values',[]))){
+                session()->forget(config('session.sms.code_key'));
+                return true;
+            }
+            $sms_codes['verify_num']++;
+            session()->put(config('session.sms.code_key'),$sms_codes);
+            return false;
+        });
+    }
+
+    /**
      * Handle a registration request for the application.
      *
      * @param  \Illuminate\Http\Request $request
@@ -212,6 +235,7 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+        $this->registerValidator();
         //极验验证
         $request->offsetSet('geetest_challenge', $request->input('verify'));
         $this->validator($request->all())->validate();

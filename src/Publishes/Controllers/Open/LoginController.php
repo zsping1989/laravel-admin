@@ -9,6 +9,7 @@ use Germey\Geetest\GeetestCaptcha;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Response;
 use Laravel\Socialite\Facades\Socialite;
 use LaravelAdmin\Facades\Option;
@@ -112,16 +113,18 @@ class LoginController extends Controller
     {
         $data['app_name'] = config('app.name');
         Data::set('global',$data);
+        $login_num = $this->getLoginFailedNum();
         return Response::returns([
-            'geetest' => $this->geetest(),
+            'verify' => config('app.verify.type')=='captcha' ? $this->captcha() : $this->geetest(),
             'other'=>\Illuminate\Support\Facades\Request::get('other',''), //三方信息数据
-            'other_login'=>$this->otherLogin
+            'other_login'=>$this->otherLogin,
+            'must_verify'=>$login_num>=config('app.verify.login_pass_num')
         ]);
     }
 
     /**
      * 极验验证
-     * @return mixed
+     * @return array
      */
     public function geetest()
     {
@@ -131,12 +134,52 @@ class LoginController extends Controller
         session()->put('user_id', $user_id);
         $data = \Geetest::getResponse();
         $data['success'] = !$data['success'];*/
-        $data['client_fail_alert'] = config('geetest.client_fail_alert', '验证失败!');
-        $data['lang'] = config('geetest.lang', 'zh-cn');
-        $data['product'] = 'float';
-        $data['http'] = 'http://';
-        $data['geetestUrl'] = '/open/geetest';
-        return $data;
+        return [
+            'type'=>'geetest',
+            'dataUrl'=>'/open/geetest',
+            'data'=>[
+                'client_fail_alert'=>config('geetest.client_fail_alert', '验证失败!'),
+                'lang'=>config('geetest.lang', 'zh-cn'),
+                'product'=>'float',
+                'http'=>'http://'
+            ]
+        ];
+    }
+
+    /**
+     * 图片验证码
+     * @return array
+     */
+    public function captcha(){
+        return [
+            'type'=>'captcha',
+            'dataUrl'=> captcha_src(), //验证码图片地址
+            'data'=>[],
+        ];
+    }
+
+    /**
+     * 登录失败次数
+     * 取最大的一个,防止暴力破解
+     * @return mixed
+     * @throws \Illuminate\Container\EntryNotFoundException
+     */
+    protected function getLoginFailedNum(){
+        $login_num_session = session()->get(config('session.verify.login_num_key'),0);
+        $login_num_ip = Cache::get(config('cache.verify.login_num_key').':'.app('request')->getClientIp(),0); //登录失败次数
+        $login_num_uname = Cache::get(config('cache.verify.login_num_key').':'.app('request')->get($this->loginUsername()),0); //登录失败次数
+        return collect([$login_num_session,$login_num_uname,$login_num_ip])->max();
+    }
+
+    /**
+     * 设置登录失败次数
+     * @param $login_num
+     * @throws \Illuminate\Container\EntryNotFoundException
+     */
+    protected function setLoginFailedNum($login_num){
+        session()->put(config('session.verify.login_num_key'),$login_num); //session记录登录失败次数
+        $login_num and Cache::put(config('cache.verify.login_num_key').':'.app('request')->getClientIp(),$login_num,600); //ip记录登录失败次数
+        Cache::put(config('cache.verify.login_num_key').':'.app('request')->get($this->loginUsername()),$login_num); //用户名记录失败次数
     }
 
     /**
@@ -149,16 +192,23 @@ class LoginController extends Controller
     {
         $uname = $this->loginUsername();
         $request->offsetSet('geetest_challenge', $request->input('verify'));
-        $this->validate($request, [
+        $validate = [
             $uname => 'required|exists:users,' . $uname . ',status,1',
-            'password' => 'required',
-            'verify' => 'required|geetest'
-        ], [
+            'password' => 'required'
+        ];
+        $login_num = $this->getLoginFailedNum();
+        if($login_num>=config('app.verify.login_pass_num')){
+            $validate['verify'] = 'required|'.config('app.verify.type');
+        }
+        $login_num++;
+        $this->setLoginFailedNum($login_num);
+        $this->validate($request,$validate , [
             $uname . '.required' => '请填写用户名',
             $uname . '.exists' => '用户名或密码错误',
             'password.required' => '请填写密码',
             'verify.required' => '验证码必填',
-            'verify.geetest' => '验证码验证失败'
+            'verify.geetest' => '验证码验证失败',
+            'verify.captcha' => '验证码验证失败'
         ], [
             'verify' => '验证码'
         ]);
@@ -296,6 +346,7 @@ class LoginController extends Controller
         $this->clearLoginAttempts($request);
         //用户数据记录
         app('user.logic')->loginCacheInfo();
+        $this->setLoginFailedNum(0);
         //如果是登录并绑定
         $other = \Illuminate\Support\Facades\Request::get('other');
         $session_other = session()->get(config('session.other_login.key'));

@@ -64,18 +64,7 @@ class LaravelAdminServiceProvider extends ServiceProvider
             ]);
         }
 
-        Validator::extend('smsCode', function($attribute, $value, $parameters){
-            if(!$value) return true;
-            //获取短信验证码
-            $sms_codes = session()->get(config('session.sms.code_key'),[]);
-            $value = $value.'|'.Request::get(array_get($parameters,0,''),'');
-            //认证成功后直接清除前面的短信码
-            if(in_array($value,array_get($sms_codes,'values',[]))){
-                session()->forget(config('session.sms.code_key'));
-                return true;
-            }
-            return false;
-        });
+
     }
 
 

@@ -196,17 +196,25 @@ return [
 
     //短信验证码
     'sms'=>[
-        'code_key'=>'sms_codes', //验证码存放键
+        'code_key'=>'sms_codes', //注册用户验证码存放键
+        'forgot_password_key'=>'forgot_password_code', //忘记密码验证码存放键
         'forbidden'=>60, //禁止发送时长
         'refuse_num'=>5, //发送多少次短信后拒绝发送
-        'refuse_time'=>1800 //拒绝发送失效时间
+        'refuse_time'=>1800, //拒绝发送失效时间
+        'verify_num'=>3 //验证码最多验证次数后需要验证验证码,防止暴力验证
     ],
+
+
     /**
      * 三方登录数据存放
      * 用于绑定登录用户,及绑定注册用户
      */
     'other_login'=>[
         'key'=>'other_login'
+    ],
+
+    'verify'=>[
+        'login_num_key'=>'login_num'
     ]
 
 ];

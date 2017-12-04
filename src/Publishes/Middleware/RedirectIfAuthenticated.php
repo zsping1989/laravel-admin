@@ -19,7 +19,7 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             $main = app('user.logic')->getUser();
-            if($main->admin){ //ºóÌ¨¹ÜÀíÔ±
+            if($main->admin){ //åå°ç®¡ç†å‘˜
                 return redirect('/admin/index');
             }else{
                 return redirect('/home/index');

@@ -7,7 +7,8 @@ return [
         'signature'=>menv('ALI_DAYU_SIGNATURE',''), //短信签名:可以使用网站名称
         'template_codes'=>[ //模板代码
             'register'=>env('ALI_DAYU_CODE_REGISTER',''), //用户注册短信模板
-            'login'=>env('ALI_DAYU_CODE_LOGIN','') //用户注册短信模板
+            'login'=>env('ALI_DAYU_CODE_LOGIN',''), //用户注册短信模板
+            'forgot'=>env('ALI_DAYU_CODE_FORGOT',''), //用户注册短信模板
         ]
     ]
 

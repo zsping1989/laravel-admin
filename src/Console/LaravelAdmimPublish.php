@@ -61,6 +61,16 @@ class LaravelAdmimPublish extends Command
             '--provider' => 'Overtrue\LaravelUEditor\UEditorServiceProvider'
         ]);
         Artisan::call('storage:link');
+        //发布验证码配置
+        Artisan::call('vendor:publish', [
+            '--tag' => 'config'
+        ]);
+
+        //数据库备份配置发布
+        Artisan::call('vendor:publish', [
+            '--provider' => 'Spatie\Backup\BackupServiceProvider'
+        ]);
+
 
         //发布LaravelAdmin
         Artisan::call('vendor:publish', [

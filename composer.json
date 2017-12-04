@@ -20,7 +20,9 @@
         "socialiteproviders/weixin": "^4.0",
         "spatie/laravel-backup": "^5.1",
         "flc/alidayu": "^2.0",
-        "yangyifan/upload": "^0.2.1"
+        "yangyifan/upload": "^0.2.1",
+        "mews/captcha": "^2.1",
+        "maknz/slack": "^1.7"
     },
     "autoload": {
         "psr-4": {

@@ -12,7 +12,7 @@
 */
 Route::get('/',function(){
     return redirect('/home/index');
-});
+})->middleware('guest');
 
 //前台无需登录路由
 Route::group(['prefix'=>'open','namespace'=>'Open'],function(){
@@ -26,7 +26,10 @@ Route::group(['prefix'=>'open','namespace'=>'Open'],function(){
     Route::post('register/send-sms', 'RegisterController@sendSMS'); //发送用户注册短信
     Route::post('register', 'RegisterController@register'); //提交注册
     Route::get('activate-by-email', 'RegisterController@activateByEmail')->name('activate'); //通过邮件激活用户
-    //Route::get('php-info', 'IndexController@phpInfo'); //php详情
+    Route::post('forgot-password/send-email', 'ForgotPasswordController@sendEmail'); //忘记密码邮件发送
+    Route::post('forgot-password/send-sms', 'ForgotPasswordController@sendSMS'); //忘记密码短信发送
+    Route::post('forgot-password/reset-password', 'ForgotPasswordController@resetPassword'); //忘记密码重置密码
+    Route::get('php-info', 'IndexController@phpInfo'); //php详情
 });
 
 //前端路由
@@ -52,6 +55,7 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware'=>['auth','acti
     createRessorceRoute('config','ConfigController');
     createRessorceRoute('admin','AdminController');
     createRessorceRoute('notification','NotificationController',['only'=>['index','list','show','destroy']]);
+    Route::get('area/optional-parent/{id?}', 'AreaController@optionalParent');
     Route::get('tolead/index', 'ToleadController@index');
     Route::get('personage/password', 'PersonageController@password'); //密码修改
     Route::get('personage/index', 'PersonageController@index'); //个人资料
