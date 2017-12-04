@@ -21,6 +21,16 @@ return [
         'type'=>env('APP_VERIFY_TYPE','geetest'), //登录注册验证类型
         'login_pass_num'=>env('APP_VERIFY_LOGIN_PASS_NUM','1')//登录验证允许次数
     ],
+     'communication_mode'=>[
+         'forgot_password'=>[ //忘记密码通讯方式
+             'email'=>'电子邮箱',
+             'mobile_phone'=>'手机号'
+         ],
+         'register'=>[ //注册用户通讯方式
+             'email'=>'电子邮箱',
+             'mobile_phone'=>'手机号'
+         ]
+    ],
 
     /*
     |--------------------------------------------------------------------------

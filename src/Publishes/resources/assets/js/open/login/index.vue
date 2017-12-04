@@ -56,6 +56,7 @@
                     other:this.$store.state.other,
                     app_name:this.$store.state.global.app_name,
                     verify:this.$store.state.verify,
+                    communicationMode:this.$store.state.communication_mode['register'],//通讯方式
                     loginUrl:'', //登录链接
                     forgetUrl:'', //忘记密码链接
                     sendUrl:'/open/register/send-sms', //获取手机短信验证码地址
@@ -67,6 +68,7 @@
                     otherLogin: this.$store.state.other_login,
                     app_name:this.$store.state.global.app_name,
                     verify:this.$store.state.verify,
+                    communicationMode:this.$store.state.communication_mode['forgot_password'],//通讯方式
                     registerUrl:'', //注册链接
                     loginUrl:'', //登录链接
                     sendSmsUrl:'/open/forgot-password/send-sms', //获取手机短信验证码地址

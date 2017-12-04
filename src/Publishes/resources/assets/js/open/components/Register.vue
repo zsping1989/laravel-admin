@@ -52,12 +52,13 @@
                     <div class="input-group">
                         <div class="input-group-btn">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{maps['activate'][config['defaultActivate']]}}
+                                {{config['communicationMode'][config['defaultActivate']]}}
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li @click="data['mobile_phone']='';defaultConfig['defaultActivate']='email'"><a href="#">电子邮箱</a></li>
-                                <li @click="data['email']='';defaultConfig['defaultActivate']='mobile_phone'"><a href="#">手机号</a></li>
+                                <li v-for="(communicationMode,key) in config['communicationMode']" @click="changeCommunicationMode(key)">
+                                    <a>{{communicationMode}}</a>
+                                </li>
                             </ul>
                         </div>
                         <input class="form-control" v-model="data[config['defaultActivate']]"  placeholder="请输入" type="text">
@@ -169,6 +170,10 @@
                         dataUrl:'', //验证方式为图片时为图片地址,为极验验证时为极验后台接口
                         data:{} //极验验证相关数据
                     },
+                    communicationMode:{
+                        'email':'电子邮箱',
+                        'mobile_phone':'手机号'
+                    },
                     loginUrl:'', //登录链接
                     forgetUrl:'', //忘记密码链接
                     dataUrl:'', //注册提交地址
@@ -184,12 +189,6 @@
                     mobile_phone:'', //手机号
                     mobile_phone_code:'', //手机号验证码
                     verify:''
-                },
-                maps:{
-                    activate:{
-                        'email':'电子邮箱',
-                        'mobile_phone':'手机号'
-                    }
                 },
                 errors:{}
             };
@@ -218,6 +217,16 @@
             }
         },
         methods: {
+            //切换通讯方式
+            changeCommunicationMode(key){
+                for(var i in this.config['communicationMode']){
+                    if(i==key){
+                        this.defaultConfig['defaultActivate']=key;
+                    }else {
+                        this.data[i]='';
+                    }
+                }
+            },
             //执行注册
             register(){
                 if (this.loading) {
