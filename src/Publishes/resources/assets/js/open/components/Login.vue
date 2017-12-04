@@ -41,14 +41,15 @@
                 <input type="password" name="password" v-model="data['password']" class="form-control" placeholder="请输入密码">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
-            <div class="form-group has-feedback" :class="{'has-error':errors['verify']}">
+            <div  v-show="config['mustVerify'] || errors['verify'] || mustVerify" class="form-group has-feedback" :class="{'has-error':errors['verify']}">
                 <label class="control-label">
                     <i class="fa fa-times-circle-o" v-show="errors['verify']" ></i>
                        <span v-for="value in errors['verify']">
                        {{value}}
                     </span>
                 </label>
-                <geetest :url="config['verify']['dataUrl']" v-model="data['verify']" :data="config['verify']['data']"></geetest>
+                <geetest v-if="config['verify']['type']=='geetest'" :url="config['verify']['dataUrl']" v-model="data['verify']" :data="config['verify']['data']"></geetest>
+                <captcha v-if="config['verify']['type']=='captcha'" :url="config['verify']['dataUrl']" v-model="data['verify']" :data="config['verify']['data']"></captcha>
             </div>
             <div class="form-group has-feedback">
                 <div class="row">
@@ -88,9 +89,11 @@
 
 <script>
     import Geetest from './Geetest.vue';
+    import Captcha from './Captcha.vue';
     export default {
         components: {
-            geetest:Geetest
+            geetest:Geetest, //滑块验证组件
+            captcha:Captcha //验证码验证组件
         },
         props: {
             //分页配置
@@ -123,6 +126,7 @@
                         dataUrl:'',
                         data:{}
                     },
+                    mustVerify:true,
                     registerUrl:'', //注册链接
                     forgetUrl:'', //忘记密码链接
                     dataUrl:'' //登录提交地址
@@ -131,8 +135,9 @@
                 loading: false, //提交中
                 data:{
                     password:'',
-                    verify:false
+                    verify:''
                 },
+                mustVerify:false,
                 errors:{}
             };
             if(typeof this.ftxConfig.usernameKey=='undefined' && this.ftxConfig.usernameKey){
@@ -167,8 +172,8 @@
         methods: {
             login(){
                 var $this = this;
-                if (!this.data['verify']) {
-                    $this.errors = {'verify':['滑块验证失败']};
+                if (!this.data['verify'] && this.config['mustVerify']) {
+                    $this.errors = {'verify':['验证码验证失败']};
                     return false;
                 }
                 var post_data = {};
@@ -176,22 +181,28 @@
                 post_data[this.config.rememberKey] = this.data[this.config.rememberKey] || '';
                 post_data['password'] = this.data['password'];
                 post_data['json'] = 1;
-                post_data['verify'] = $(this.$el).find("input[name='geetest_challenge']").val();
-                post_data['geetest_validate'] = $(this.$el).find("input[name='geetest_validate']").val();
-                post_data['geetest_seccode'] = $(this.$el).find("input[name='geetest_seccode']").val();
+                if($this.config['verify']['type']=='captcha'){
+                    post_data['verify'] = $this.data['verify'];
+                }else {
+                    post_data['verify'] = $(this.$el).find("input[name='geetest_challenge']").val();
+                    post_data['geetest_validate'] = $(this.$el).find("input[name='geetest_validate']").val();
+                    post_data['geetest_seccode'] = $(this.$el).find("input[name='geetest_seccode']").val();
+                }
                 post_data['remember'] = this.data['remember'] ? 1 : undefined;
                 post_data['other'] = $this.config.other;
-                $this.data['verify'] = false;
                 axios.post($this.config.dataUrl,post_data)
                         .then(function(res){
                             if(res.data.redirect){
                                 window.location.href = res.data.redirect;
                             }
-                            $this.data['verify'] = false;
+                            $this.data['verify'] = '';
                         })
                         .catch(function(error){
                             $this.errors = catchError(error);
-                            $this.data['verify'] = false;
+                            if($this.errors['verify']){
+                                $this.mustVerify = true;
+                            }
+                            $this.data['verify'] = '';
                         });
             }
         },

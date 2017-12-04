@@ -15,10 +15,12 @@
             <template scope="props" slot="table-content-row">
                 <td v-for="(value,key) in props.fields"  :class="value['class'] ? value['class']:''">
                      <span v-if="0"></span>
-                                                                                                                                                                <span v-else-if="key =='status'">
+
+                    <span v-else-if="key =='status'">
                                 <span class="label" :class="'label-'+statusClass[props.item[key]%statusClass.length]">{{ maps[key][props.item[key]] }}</span>
                             </span>
-                                                                                                                                                                                                    <span v-else-if="key.indexOf('.')!=-1">
+
+                    <span v-else-if="key.indexOf('.')!=-1">
                         {{ props.item | array_get(key) }}
                     </span>
                     <span v-else>
@@ -41,7 +43,14 @@
                 editUrl: data.configUrl.showUrl, //数据编辑页面
                 destroyUrl: data.configUrl.destroyUrl, //删除数据地址
                 exportUrl: data.configUrl.exportUrl,
-                fields: {"id":{"name":"区域ID","order":true},"name":{"name":"名称","order":true},"status":{"name":"状态","order":true},"parent_id":{"name":"父ID","order":true},"created_at":{"name":"创建时间","order":true},"updated_at":{"name":"修改时间","order":true}},
+                fields: {
+                    "id":{"name":"区域ID","order":true},
+                    "name":{"name":"名称","order":true},
+                    "status":{"name":"状态","order":true},
+                    "parent.name": {"name": "父级", "order": true,orderField:'parent_id'},
+                    "created_at":{"name":"创建时间","order":true},
+                    "updated_at":{"name":"修改时间","order":true}
+                },
                 operation: true //需要操作列
             };
             return data;
