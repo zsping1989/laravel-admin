@@ -80,7 +80,7 @@ import MainModal from '../home/components/Modal.vue';
 import DataTable from '../public/DataTable.vue';
 import Edit from '../public/Edit.vue';
 
-//页面组件
+/*//页面组件
  import UserIndex from './user/index.vue';
  import UserEdit from './user/edit.vue';
  import Index from './index.vue';
@@ -100,7 +100,7 @@ import Edit from '../public/Edit.vue';
  import AdminIndex from './admin/index.vue';
  import AdminEdit from './admin/edit.vue';
 import AreaIndex from './area/index.vue';
-import AreaEdit from './area/edit.vue';
+import AreaEdit from './area/edit.vue';*/
 
 Vue.component("data-table",DataTable);
 Vue.component("edit",Edit);
@@ -111,29 +111,67 @@ let components = {
     'main-footer':Footer, //底部
     'main-sidebar':Sidebar,
     'main-alert':MainAlert, //弹窗
-    'main-modal':MainModal
-
-     ,
-     'user-index':UserIndex,
-     'user-edit':UserEdit,
-     'index':Index,
-     'role-index':RoleIndex,
-     'role-edit':RoleEdit,
-     'log-index':LogIndex,
-     'log-edit':LogEdit,
-     'config-index':ConfigIndex,
-     'config-edit':ConfigEdit,
-     'tolead-index':ToleadIndex,
-     'personage-index':PersonageIndex,
-     'personage-password':PersonagePassword,
-     'notification-index':NotificationIndex,
-     'notification-edit':NotificationEdit,
-     'menu-index':MenuIndex,
-     'menu-edit':MenuEdit,
-     'admin-index':AdminIndex,
-     'admin-edit':AdminEdit,
-    'area-edit':AreaEdit,
-    'area-index':AreaIndex
+    'main-modal':MainModal,
+    'index':function(resolve){
+        require(['./index.vue'], resolve);
+    },
+    'user-index':function(resolve){
+        require(['./user/index.vue'], resolve);
+    },
+    'user-edit':function(resolve){
+        require(['./user/edit.vue'], resolve);
+    },
+    'role-index':function(resolve){
+        require(['./role/index.vue'], resolve);
+    },
+    'role-edit':function(resolve){
+        require(['./role/edit.vue'], resolve);
+    },
+    'log-index':function(resolve){
+        require(['./log/index.vue'], resolve);
+    },
+    'log-edit':function(resolve){
+        require(['./log/edit.vue'], resolve);
+    },
+    'config-index':function(resolve){
+        require(['./config/index.vue'], resolve);
+    },
+    'config-edit':function(resolve){
+        require(['./config/edit.vue'], resolve);
+    },
+    'tolead-index':function(resolve){
+        require(['./tolead/index.vue'], resolve);
+    },
+    'personage-index':function(resolve){
+        require(['./personage/index.vue'], resolve);
+    },
+    'personage-password':function(resolve){
+        require(['./personage/password.vue'], resolve);
+    },
+    'notification-index':function(resolve){
+        require(['./notification/index.vue'], resolve);
+    },
+    'notification-edit':function(resolve){
+        require(['./notification/edit.vue'], resolve);
+    },
+    'menu-index':function(resolve){
+        require(['./menu/index.vue'], resolve);
+    },
+    'menu-edit':function(resolve){
+        require(['./menu/edit.vue'], resolve);
+    },
+    'admin-index':function(resolve){
+        require(['./admin/index.vue'], resolve);
+    },
+    'admin-edit':function(resolve){
+        require(['./admin/edit.vue'], resolve);
+    },
+    'area-index':function(resolve){
+        require(['./area/index.vue'], resolve);
+    },
+    'area-edit':function(resolve){
+        require(['./area/edit.vue'], resolve);
+    }
 };
 
 

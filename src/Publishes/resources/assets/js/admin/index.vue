@@ -834,7 +834,9 @@
 <script>
     export default {
         components: {
-            "echart":(resolve) => require(['../public/Echart.vue'], resolve) //异步组件
+            "echart":function(resolve){
+                require(['public/Echart.vue'], resolve); //异步组件
+            }
         },
         data(){
             var data = this.$store.state;

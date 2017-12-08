@@ -71,7 +71,7 @@
     export default {
         components: {
             "ztree":function(resolve){
-                require(['../../public/Ztree.vue'], resolve); //异步组件
+                require(['public/Ztree.vue'], resolve); //异步组件
             }
         },
         data:function() {

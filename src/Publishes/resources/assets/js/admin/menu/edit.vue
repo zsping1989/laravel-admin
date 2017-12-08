@@ -141,7 +141,9 @@
 <script>
     export default {
         components: {
-            "ztree":(resolve) => require(['../../public/Ztree.vue'], resolve) //异步组件
+            "ztree":function(resolve){
+                require(['public/Ztree.vue'], resolve);
+            } //异步组件
         },
         data() {
             var data = this.$store.state;

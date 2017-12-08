@@ -25,9 +25,9 @@
             },
             //绑定值
             value: {
-                type:[Boolean],
+                type:[Boolean,String],
                 default: function () {
-                    return false;
+                    return '';
                 }
             }, //默认选项
             data:{

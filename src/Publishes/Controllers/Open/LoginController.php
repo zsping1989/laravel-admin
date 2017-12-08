@@ -118,7 +118,8 @@ class LoginController extends Controller
             'verify' => config('app.verify.type')=='captcha' ? $this->captcha() : $this->geetest(),
             'other'=>\Illuminate\Support\Facades\Request::get('other',''), //三方信息数据
             'other_login'=>$this->otherLogin,
-            'must_verify'=>$login_num>=config('app.verify.login_pass_num')
+            'must_verify'=>$login_num>=config('app.verify.login_pass_num'),
+            'communication_mode'=>config('app.communication_mode')
         ]);
     }
 
