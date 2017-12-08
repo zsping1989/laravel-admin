@@ -17,7 +17,7 @@ class AdminMiddleware{
      * 操作日志ID
      * @var
      */
-    protected $log_id=0;
+    protected static $log_id=0;
     /**
      * 脚本运行时调用
      *
@@ -44,7 +44,7 @@ class AdminMiddleware{
                 'parameters'=>json_encode(Request::all(),JSON_UNESCAPED_UNICODE),
                 'return'=>''
             ]);
-            $this->log_id = $log['id'];
+            self::$log_id = $log['id'];
         }
         //不是管理员,跳转到前台首页
         if(!app('user.logic')->getUserInfo('admin')){
@@ -93,9 +93,9 @@ class AdminMiddleware{
      */
     public function terminate($request, $response)
     {
-        if($this->log_id){
+        if(self::$log_id ){
             //写入返回数据
-            Log::where('id',$this->log_id)->update(['return'=>str_limit(json_encode(Data::all(),JSON_UNESCAPED_UNICODE),60000)]);
+            Log::where('id',self::$log_id)->update(['return'=>str_limit(json_encode(Data::all(),JSON_UNESCAPED_UNICODE),60000)]);
         }
     }
 }

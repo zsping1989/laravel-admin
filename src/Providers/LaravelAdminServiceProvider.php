@@ -51,6 +51,7 @@ class LaravelAdminServiceProvider extends ServiceProvider
             __DIR__.'/../Publishes/.env.example' => base_path('.env.example'), //配置事列
             __DIR__.'/../Publishes/package.json' => base_path('package.json'), //前端依赖包
             __DIR__.'/../Publishes/webpack.mix.js' => base_path('webpack.mix.js'), //前端编译配置
+            __DIR__.'/../Publishes/Envoy.blade.php' => base_path('Envoy.blade.php'),
         ],'laravel-admin');
 
         //时间语言设置
