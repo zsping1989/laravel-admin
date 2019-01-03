@@ -9,7 +9,7 @@ return [
          * The name of this application. You can use this name to monitor
          * the backups.
          */
-        'name' => config('app.name'),
+        'name' => env('APP_NAME'),
 
         /**
          * 备份的资源
@@ -134,7 +134,7 @@ return [
      */
     'monitorBackups' => [
         [
-            'name' => config('app.name'),
+            'name' => env('APP_NAME'),
             'disks' => ['local'],
             'newestBackupsShouldNotBeOlderThanDays' => 1,
             'storageUsedMayNotBeHigherThanMegabytes' => 5000,

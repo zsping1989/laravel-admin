@@ -7,6 +7,7 @@ use App\Models\Menu;
 use App\User;
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class ActivatedMiddleware{
     /**
@@ -26,6 +27,7 @@ class ActivatedMiddleware{
             dd('请先通过用户注册的邮箱激活!');
         }
         $response = $next($request);
+        Config::set('app.scope', true);
         //后置操作
         return $response;
     }

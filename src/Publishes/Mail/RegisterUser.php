@@ -13,18 +13,6 @@ class RegisterUser extends Mailable
     use Queueable, SerializesModels;
     protected $user;
     protected $url;
-    /**
-     * 最大连接数
-     * The number of times the job may be attempted.
-     * @var int
-     */
-    public $tries = 3;
-
-    /**
-     * 超时时长
-     * @var int
-     */
-    public $timeout = 15;
 
     /**
      * Create a new message instance.

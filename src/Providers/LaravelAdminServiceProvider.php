@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use LaravelAdmin\Facades\Option;
 use LaravelAdmin\Logics\UserLogicService;
 use LaravelAdmin\Logics\MenuLogicService;
 use LaravelAdmin\Services\OptionRepository;
@@ -98,5 +99,12 @@ class LaravelAdminServiceProvider extends ServiceProvider
     public function provides()
     {
         return ['sms','menu.logic','user.logic','option'];
+    }
+
+    public function __destruct()
+    {
+        if(app()->offsetExists('option')){
+            Option::save();
+        }
     }
 }

@@ -4,6 +4,8 @@ namespace LaravelAdmin\Middleware;
 
 use App\Models\Log;
 use App\Models\Menu;
+use App\Models\Role;
+use App\Models\User;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -30,11 +32,14 @@ class AdminMiddleware{
 
     public function handle($request, Closure $next)
     {
+        $url = Route::getCurrentRoute()->getCompiled()->getStaticPrefix();
         //记录用户操作日志
-        if(!in_array(Route::getCurrentRoute()->getCompiled()->getStaticPrefix(),
-            ['/admin/log/edit','/admin/log/index','/admin/log/list','/admin/log/export'])){ //排除无需日志记录
+        if(!in_array($url,
+            ['/admin/log/edit','/admin/log/index','/admin/log/list','/admin/log/export'])
+        && ends_with($url,'edit')
+        ){ //排除无需日志记录
             $log = Log::create([
-                'menu_id'=>array_get(MenuLogic::getNowMenu(),'id',0),
+                'menu_id'=>array_get(Menu::getNowMenu(),'id',0),
                 'user_id'=>array_get(Auth::user(),'id'),
                 'location'=>collect(app('ip2city')->ip2addr(app('request')->getClientIp()))
                     ->unique()
@@ -47,7 +52,7 @@ class AdminMiddleware{
             self::$log_id = $log['id'];
         }
         //不是管理员,跳转到前台首页
-        if(!app('user.logic')->getUserInfo('admin')){
+        if(!User::isAdmin()){
             if(canRedirect() || app('request')->has('define')){
                 return orRedirect('/admin/index/page404');
             }
@@ -55,9 +60,9 @@ class AdminMiddleware{
         }
 
         //不是超级管理员,需要验证权限
-        if(!app('user.logic')->getUserInfo('isSuperAdmin')){
+        if(!Role::isSuper()){
             //当前用户拥有的菜单权限
-            $menus = app('user.logic')->getUserInfo('menus');
+            $menus =  Menu::getMain();
 
             //当前路由
             $route = Route::getCurrentRoute()->getCompiled()->getStaticPrefix();
@@ -65,7 +70,7 @@ class AdminMiddleware{
             $method = array_get(array_flip(Menu::getFieldsMap('method')->toArray()),strtolower(app('request')->method()),0);
 
             //判断当前路由是否在拥有权限url中
-            $hasPermission = app('menu.logic')->isUrlInMenus($route,$menus,$method);
+            $hasPermission = Menu::isUrlInMenus($route,$menus,$method);
 
             //没有权限
             if(!$hasPermission){
@@ -93,7 +98,7 @@ class AdminMiddleware{
      */
     public function terminate($request, $response)
     {
-        if(self::$log_id ){
+        if(self::$log_id){
             //写入返回数据
             Log::where('id',self::$log_id)->update(['return'=>str_limit(json_encode(Data::all(),JSON_UNESCAPED_UNICODE),60000)]);
         }

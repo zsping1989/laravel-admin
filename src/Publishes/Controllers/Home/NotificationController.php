@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Notification;
 use App\Models\Role;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use LaravelAdmin\Facades\UserLogic;
 use Resource\Controllers\ResourceController;
@@ -51,7 +52,7 @@ class NotificationController extends Controller
     public function bindModel()
     {
         if (!$this->bindModel) {
-            $this->bindModel = UserLogic::getUser()->notifications();
+            $this->bindModel = Auth::user()->notifications();
         }
         return $this->bindModel;
     }
@@ -83,7 +84,7 @@ class NotificationController extends Controller
 
         //获取未读总记录条数
         $no_read_count = Notification::where('notifiable_type','App\User')
-            ->where('notifiable_id',array_get(UserLogic::getUser(),'id'))
+            ->where('notifiable_id',array_get(Auth::user(),'id'))
             ->whereNull('read_at')
             ->groupBy('type')
             ->selectRaw('type,COUNT(*) AS `count`')

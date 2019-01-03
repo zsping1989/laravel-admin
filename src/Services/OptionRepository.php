@@ -2,6 +2,7 @@
 
 namespace LaravelAdmin\Services;
 
+use App\Models\Config;
 use \Illuminate\Support\Facades\DB;
 use ArrayAccess;
 use Illuminate\Support\Arr;
@@ -25,7 +26,11 @@ class OptionRepository implements ArrayAccess, ConfigContract
      */
     public function __construct()
     {
-        $options = DB::table('configs')->get();
+        try{
+            $options = Config::get();
+        }catch (\Exception $e){
+            $options = [];
+        }
 
         foreach ($options as $option) {
             $this->items[$option->key] = $option->value;
@@ -76,18 +81,16 @@ class OptionRepository implements ArrayAccess, ConfigContract
         }
     }
 
-    protected function save()
+    public function save()
     {
         $this->items_modified = array_unique($this->items_modified);
 
         foreach ($this->items_modified as $key) {
-            if (!DB::table('configs')->where('key', $key)->first()) {
-                DB::table('configs')
-                    ->insert(['key' => $key, 'value' => $this[$key]]);
+            if (!$item = Config::where('key', $key)->first()) {
+                Config::insert(['key' => $key, 'value' => $this[$key]]);
             } else {
-                DB::table('configs')
-                    ->where('key', $key)
-                    ->update(['value' => $this[$key]]);
+                $item->value = $this[$key];
+                $item->save();
             }
         }
     }
