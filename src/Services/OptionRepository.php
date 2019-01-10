@@ -27,7 +27,11 @@ class OptionRepository implements ArrayAccess, ConfigContract
     public function __construct()
     {
         try{
-            $options = Config::get();
+            if(class_exists('\App\Models\Config')){
+                $options = \App\Models\Config::get();
+            }else{
+                $options = [];
+            }
         }catch (\Exception $e){
             $options = [];
         }
